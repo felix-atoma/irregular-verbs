@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Irregular Verbs Learning Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #ffd700;
+            --success: #4caf50;
+            --danger: #f44336;
+            --light: #f8f9fa;
+            --dark: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding: 20px;
+            animation: fadeInDown 1s;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .tab-btn.active {
+            background: var(--accent);
+            color: var(--secondary);
+        }
+
+        .content-area {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            min-height: 500px;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* Search and Filter */
+        .search-box {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid var(--primary);
+            border-radius: 25px;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Verb Table */
+        .verb-table {
+            overflow-x: auto;
+            max-height: 500px;
+            overflow-y: auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr {
+            transition: all 0.3s;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+            transform: scale(1.01);
+        }
+
+        .audio-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 18px;
+            margin-left: 8px;
+            transition: all 0.3s;
+        }
+
+        .audio-btn:hover {
+            color: var(--secondary);
+            animation: pulse 0.5s;
+        }
+
+        /* Quiz Styles */
+        .quiz-container {
+            text-align: center;
+        }
+
+        .question-box {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .question {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            padding: 15px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .option-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .option-btn.correct {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+            animation: pulse 0.5s;
+        }
+
+        .option-btn.incorrect {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% {transform: translateX(0);}
+            10%, 30%, 50%, 70%, 90% {transform: translateX(-5px);}
+            20%, 40%, 60%, 80% {transform: translateX(5px);}
+        }
+
+        .score {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 20px;
+        }
+
+        .next-btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 20px auto 0;
+        }
+
+        .next-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Memory Game */
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transform-style: preserve-3d;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card.flipped {
+            background: white;
+            color: var(--dark);
+            border: 2px solid var(--primary);
+            transform: rotateY(180deg);
+        }
+
+        .card.matched {
+            background: var(--success);
+            color: white;
+            cursor: default;
+            transform: scale(0.95);
+            animation: bounce 0.5s;
+        }
+
+        .card-back, .card-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            border-radius: 10px;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            font-size: 32px;
+        }
+
+        .card-front {
+            background: white;
+            transform: rotateY(180deg);
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Flashcards */
+        .flashcard-container {
+            text-align: center;
+        }
+
+        .flashcard {
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            margin: 30px auto;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .flashcard-front {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .flashcard-back {
+            background: white;
+            border: 3px solid var(--primary);
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .flashcard-back .verb-form {
+            font-size: 24px;
+            margin: 10px 0;
+            color: var(--dark);
+        }
+
+        .flashcard-back .translation {
+            font-size: 18px;
+            color: #666;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        .flashcard-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .stats {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* Typing Game */
+        .typing-game {
+            text-align: center;
+        }
+
+        .typing-prompt {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .typing-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .timer {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        .result-message {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .result-message.correct {
+            background: var(--success);
+            color: white;
+            animation: pulse 0.5s;
+        }
+
+        .result-message.incorrect {
+            background: var(--danger);
+            color: white;
+            animation: shake 0.5s;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--success);
+            transition: width 0.3s;
+        }
+
+        /* Celebration Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            top: 0;
+            opacity: 0;
+        }
+
+        @keyframes confetti-fall {
+            0% { top: -10px; opacity: 1; }
+            100% { top: 100vh; opacity: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-board {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .flashcard-front h2 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-board {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                width: 100%;
+            }
+        }
+
+        /* Fun Elements */
+        .character {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 100;
+            animation: bounce 2s infinite;
+        }
+
+        .character:hover {
+            animation: pulse 0.5s infinite;
+        }
+
+        .verb-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 10px auto;
+            display: block;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Interactive Verbs Learning Hub</h1>
+            <p class="subtitle">Master English irregular verbs with audio, games, and fun activities!</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="browse"><i class="fas fa-book"></i> Browse Verbs</button>
+            <button class="tab-btn" data-tab="flashcards"><i class="fas fa-id-card"></i> Flashcards</button>
+            <button class="tab-btn" data-tab="quiz"><i class="fas fa-question-circle"></i> Quiz</button>
+            <button class="tab-btn" data-tab="typing"><i class="fas fa-keyboard"></i> Typing Challenge</button>
+            <button class="tab-btn" data-tab="memory"><i class="fas fa-brain"></i> Memory Game</button>
+        </div>
+
+        <div class="content-area">
+            <!-- Browse Verbs Tab -->
+            <div class="tab-content active" id="browse">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Search for a verb...">
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar" style="width: 0%"></div>
+                </div>
+                <div class="verb-table">
+                    <table id="verbTable">
+                        <thead>
+                            <tr>
+                                <th>Infinitive</th>
+                                <th>Preterite</th>
+                                <th>Past Participle</th>
+                                <th>French Translation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="verbTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Flashcards Tab -->
+            <div class="tab-content" id="flashcards">
+                <div class="flashcard-container">
+                    <h2>Click the card to flip it!</h2>
+                    <div class="flashcard" id="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <h2 id="flashcard-infinitive">Loading...</h2>
+                                <p>Click to see forms</p>
+                                <button class="audio-btn" onclick="speakText('flashcard-infinitive')">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                            </div>
+                            <div class="flashcard-back">
+                                <div class="verb-form"><strong>Preterite:</strong> <span id="flashcard-preterite"></span>
+                                    <button class="audio-btn" onclick="speakText('flashcard-preterite')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </button>
+                                </div>
+                                <div class="verb-form"><strong>Past Participle:</strong> <span id="flashcard-past"></span>
+                                    <button class="audio-btn" onclick="speakText('flashcard-past')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </button>
+                                </div>
+                                <div class="translation" id="flashcard-french"></div>
+                                <button class="audio-btn" onclick="speakText('flashcard-french')">
+                                    <i class="fas fa-language"></i> Traduire
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flashcard-controls">
+                        <button class="control-btn" onclick="previousFlashcard()"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button class="control-btn" onclick="shuffleFlashcards()"><i class="fas fa-random"></i> Shuffle</button>
+                        <button class="control-btn" onclick="nextFlashcard()">Next <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="stats">
+                        Card <span id="flashcard-index">1</span> of <span id="flashcard-total">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Tab -->
+            <div class="tab-content" id="quiz">
+                <div class="quiz-container">
+                    <h2>Test Your Knowledge!</h2>
+                    <div class="question-box">
+                        <div class="question" id="quiz-question">Loading question...</div>
+                        <div class="options" id="quiz-options"></div>
+                    </div>
+                    <div class="score">Score: <span id="quiz-score">0</span> / <span id="quiz-total">0</span></div>
+                    <button class="next-btn" id="next-question-btn" onclick="nextQuestion()">
+                        <i class="fas fa-forward"></i> Next Question
+                    </button>
+                </div>
+            </div>
+
+            <!-- Typing Challenge Tab -->
+            <div class="tab-content" id="typing">
+                <div class="typing-game">
+                    <h2><i class="fas fa-keyboard"></i> Typing Challenge</h2>
+                    <p>Type the correct form as quickly as possible!</p>
+                    <div class="typing-prompt">
+                        <div class="question" id="typing-question">Loading...</div>
+                        <input type="text" class="typing-input" id="typing-input" placeholder="Type your answer here...">
+                    </div>
+                    <div class="timer">Time: <span id="typing-timer">0</span>s</div>
+                    <div id="typing-result"></div>
+                    <div class="stats">
+                        Correct: <span id="typing-correct">0</span> | Wrong: <span id="typing-wrong">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memory Game Tab -->
+            <div class="tab-content" id="memory">
+                <div class="quiz-container">
+                    <h2><i class="fas fa-brain"></i> Memory Matching Game</h2>
+                    <p>Match the infinitive with its past participle!</p>
+                    <div class="game-board" id="game-board"></div>
+                    <div class="stats">
+                        Moves: <span id="moves">0</span> | Matches: <span id="matches">0</span> / 8
+                    </div>
+                    <button class="next-btn" onclick="initMemoryGame()">
+                        <i class="fas fa-redo"></i> New Game
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fun Character -->
+    <div class="character" onclick="celebrate()">
+        <i class="fas fa-graduation-cap"></i>
+    </div>
+
+    <script>
+        // Complete list of irregular verbs with French translations
+        const verbs = [
+            ["abide", "abode", "abode", "supporter, demeurer"],
+            ["arise", "arose", "arisen", "surgir, se lever"],
+            ["awake", "awoke", "awoken", "se réveiller"],
+            ["be", "was/were", "been", "être"],
+            ["bear", "bore", "borne/born", "porter, supporter, naître"],
+            ["beat", "beat", "beaten", "battre"],
+            ["become", "became", "become", "devenir"],
+            ["begin", "began", "begun", "commencer"],
+            ["bend", "bent", "bent", "plier"],
+            ["bet", "bet", "bet", "parier"],
+            ["bind", "bound", "bound", "lier, relier"],
+            ["bite", "bit", "bitten", "mordre"],
+            ["bleed", "bled", "bled", "saigner"],
+            ["blow", "blew", "blown", "souffler"],
+            ["break", "broke", "broken", "casser"],
+            ["bring", "brought", "brought", "apporter"],
+            ["build", "built", "built", "construire"],
+            ["buy", "bought", "bought", "acheter"],
+            ["catch", "caught", "caught", "attraper"],
+            ["choose", "chose", "chosen", "choisir"],
+            ["come", "came", "come", "venir"],
+            ["cost", "cost", "cost", "coûter"],
+            ["cut", "cut", "cut", "couper"],
+            ["deal", "dealt", "dealt", "distribuer"],
+            ["dig", "dug", "dug", "creuser"],
+            ["do", "did", "done", "faire"],
+            ["draw", "drew", "drawn", "dessiner, tirer"],
+            ["drink", "drank", "drunk", "boire"],
+            ["drive", "drove", "driven", "conduire"],
+            ["eat", "ate", "eaten", "manger"],
+            ["fall", "fell", "fallen", "tomber"],
+            ["feed", "fed", "fed", "nourrir"],
+            ["feel", "felt", "felt", "sentir"],
+            ["fight", "fought", "fought", "se battre"],
+            ["find", "found", "found", "trouver"],
+            ["fly", "flew", "flown", "voler"],
+            ["forget", "forgot", "forgotten", "oublier"],
+            ["forgive", "forgave", "forgiven", "pardonner"],
+            ["freeze", "froze", "frozen", "geler"],
+            ["get", "got", "got/gotten", "obtenir"],
+            ["give", "gave", "given", "donner"],
+            ["go", "went", "gone", "aller"],
+            ["grow", "grew", "grown", "pousser, grandir"],
+            ["hang", "hung/hanged", "hung/hanged", "suspendre/pendre"],
+            ["have", "had", "had", "avoir"],
+            ["hear", "heard", "heard", "entendre"],
+            ["hide", "hid", "hidden", "(se) cacher"],
+            ["hit", "hit", "hit", "frapper"],
+            ["hold", "held", "held", "tenir"],
+            ["hurt", "hurt", "hurt", "blesser"],
+            ["keep", "kept", "kept", "garder"],
+            ["know", "knew", "known", "savoir, connaître"],
+            ["lay", "laid", "laid", "poser"],
+            ["lead", "led", "led", "mener"],
+            ["leave", "left", "left", "partir, laisser"],
+            ["lend", "lent", "lent", "prêter"],
+            ["let", "let", "let", "laisser"],
+            ["lie", "lay", "lain", "être allongé"],
+            ["lose", "lost", "lost", "perdre"],
+            ["make", "made", "made", "faire, fabriquer"],
+            ["mean", "meant", "meant", "signifier, vouloir dire"],
+            ["meet", "met", "met", "rencontrer"],
+            ["pay", "paid", "paid", "payer"],
+            ["put", "put", "put", "mettre"],
+            ["read", "read", "read", "lire"],
+            ["ride", "rode", "ridden", "monter (à cheval)"],
+            ["ring", "rang", "rung", "sonner"],
+            ["rise", "rose", "risen", "s'élever"],
+            ["run", "ran", "run", "courir"],
+            ["say", "said", "said", "dire"],
+            ["see", "saw", "seen", "voir"],
+            ["sell", "sold", "sold", "vendre"],
+            ["send", "sent", "sent", "envoyer"],
+            ["set", "set", "set", "poser, régler"],
+            ["shake", "shook", "shaken", "secouer"],
+            ["shine", "shone", "shone", "briller"],
+            ["shoot", "shot", "shot", "tirer"],
+            ["show", "showed", "shown/showed", "montrer"],
+            ["shut", "shut", "shut", "fermer"],
+            ["sing", "sang", "sung", "chanter"],
+            ["sink", "sank", "sunk", "couler"],
+            ["sit", "sat", "sat", "s'asseoir"],
+            ["sleep", "slept", "slept", "dormir"],
+            ["speak", "spoke", "spoken", "parler"],
+            ["spend", "spent", "spent", "dépenser"],
+            ["stand", "stood", "stood", "être debout"],
+            ["steal", "stole", "stolen", "voler (dérober)"],
+            ["swim", "swam", "swum", "nager"],
+            ["take", "took", "taken", "prendre"],
+            ["teach", "taught", "taught", "enseigner"],
+            ["tear", "tore", "torn", "déchirer"],
+            ["tell", "told", "told", "dire, raconter"],
+            ["think", "thought", "thought", "penser"],
+            ["throw", "threw", "thrown", "lancer (jeter)"],
+            ["understand", "understood", "understood", "comprendre"],
+            ["wake", "woke/waked", "woken/waked", "(se) réveiller"],
+            ["wear", "wore", "worn", "porter (vêtements)"],
+            ["win", "won", "won", "gagner (un jeu)"],
+            ["write", "wrote", "written", "écrire"]
+        ];
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Populate verb table
+        function populateTable(filter = '') {
+            const tbody = document.getElementById('verbTableBody');
+            tbody.innerHTML = '';
+            const filteredVerbs = verbs.filter(v => v.join(' ').toLowerCase().includes(filter.toLowerCase()));
+            
+            filteredVerbs.forEach(verb => {
+                const row = tbody.insertRow();
+                
+                // Add infinitive with audio button
+                const infinitiveCell = row.insertCell();
+                infinitiveCell.innerHTML = `${verb[0]} <button class="audio-btn" onclick="speakText('${verb[0]}')"><i class="fas fa-volume-up"></i></button>`;
+                
+                // Add preterite with audio button
+                const preteriteCell = row.insertCell();
+                preteriteCell.innerHTML = `${verb[1]} <button class="audio-btn" onclick="speakText('${verb[1]}')"><i class="fas fa-volume-up"></i></button>`;
+                
+                // Add past participle with audio button
+                const pastCell = row.insertCell();
+                pastCell.innerHTML = `${verb[2]} <button class="audio-btn" onclick="speakText('${verb[2]}')"><i class="fas fa-volume-up"></i></button>`;
+                
+                // Add French translation with translation button
+                const frenchCell = row.insertCell();
+                frenchCell.innerHTML = `${verb[3]} <button class="audio-btn" onclick="speakText('${verb[3]}', 'fr-FR')"><i class="fas fa-language"></i></button>`;
+            });
+            
+            // Update progress bar
+            const progress = (filteredVerbs.length / verbs.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            populateTable(e.target.value);
+        });
+
+        // Text-to-speech function
+        function speakText(textOrId, lang = 'en-US') {
+            let text;
+            
+            // Check if we're passed an element ID or text
+            if (document.getElementById(textOrId)) {
+                text = document.getElementById(textOrId).textContent || document.getElementById(textOrId).innerText;
+            } else {
+                text = textOrId;
+            }
+            
+            // Clean the text (remove buttons, etc.)
+            text = text.replace(/<button[\s\S]*?<\/button>/g, '').trim();
+            
+            const speech = new SpeechSynthesisUtterance();
+            speech.text = text;
+            speech.lang = lang;
+            speech.volume = 1;
+            speech.rate = 0.8;
+            speech.pitch = 1;
+            
+            window.speechSynthesis.speak(speech);
+        }
+
+        // Celebration function
+        function celebrate() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.animation = `confetti-fall ${Math.random() * 3 + 2}s linear forwards`;
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+            
+            // Play celebration sound if available
+            const audio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==');
+            audio.play().catch(e => console.log('Audio play failed:', e));
+        }
+
+        // Flashcards
+        let currentFlashcardIndex = 0;
+        let flashcardDeck = [...verbs];
+
+        function loadFlashcard() {
+            const verb = flashcardDeck[currentFlashcardIndex];
+            document.getElementById('flashcard-infinitive').textContent = verb[0];
+            document.getElementById('flashcard-preterite').textContent = verb[1];
+            document.getElementById('flashcard-past').textContent = verb[2];
+            document.getElementById('flashcard-french').textContent = verb[3];
+            document.getElementById('flashcard-index').textContent = currentFlashcardIndex + 1;
+            document.getElementById('flashcard-total').textContent = flashcardDeck.length;
+            document.getElementById('flashcard').classList.remove('flipped');
+        }
+
+        document.getElementById('flashcard').addEventListener('click', function() {
+            this.classList.toggle('flipped');
+        });
+
+        function nextFlashcard() {
+            currentFlashcardIndex = (currentFlashcardIndex + 1) % flashcardDeck.length;
+            loadFlashcard();
+        }
+
+        function previousFlashcard() {
+            currentFlashcardIndex = (currentFlashcardIndex - 1 + flashcardDeck.length) % flashcardDeck.length;
+            loadFlashcard();
+        }
+
+        function shuffleFlashcards() {
+            flashcardDeck = [...verbs].sort(() => Math.random() - 0.5);
+            currentFlashcardIndex = 0;
+            loadFlashcard();
+        }
+
+        // Quiz
+        let quizScore = 0;
+        let quizTotal = 0;
+        let currentQuizVerb;
+        let quizAnswered = false;
+
+        function generateQuizQuestion() {
+            quizAnswered = false;
+            currentQuizVerb = verbs[Math.floor(Math.random() * verbs.length)];
+            const questionTypes = [
+                { q: `What is the preterite of "${currentQuizVerb[0]}"?`, a: currentQuizVerb[1], i: 1 },
+                { q: `What is the past participle of "${currentQuizVerb[0]}"?`, a: currentQuizVerb[2], i: 2 },
+                { q: `What is the infinitive of "preterite: ${currentQuizVerb[1]}"?`, a: currentQuizVerb[0], i: 0 },
+                { q: `What is the French translation of "${currentQuizVerb[0]}"?`, a: currentQuizVerb[3], i: 3 }
+            ];
+            const question = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+            
+            document.getElementById('quiz-question').textContent = question.q;
+            
+            const options = [question.a];
+            while (options.length < 4) {
+                const randomVerb = verbs[Math.floor(Math.random() * verbs.length)];
+                const option = randomVerb[question.i];
+                if (!options.includes(option)) {
+                    options.push(option);
+                }
+            }
+            
+            options.sort(() => Math.random() - 0.5);
+            
+            const optionsDiv = document.getElementById('quiz-options');
+            optionsDiv.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(btn, opt, question.a);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(btn, selected, correct) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+            quizTotal++;
+            
+            const allButtons = document.querySelectorAll('.option-btn');
+            allButtons.forEach(b => b.style.pointerEvents = 'none');
+            
+            if (selected === correct) {
+                btn.classList.add('correct');
+                quizScore++;
+                // Celebrate correct answer
+                if (quizScore % 5 === 0) {
+                    celebrate();
+                }
+            } else {
+                btn.classList.add('incorrect');
+                allButtons.forEach(b => {
+                    if (b.textContent === correct) {
+                        b.classList.add('correct');
+                    }
+                });
+            }
+            
+            document.getElementById('quiz-score').textContent = quizScore;
+            document.getElementById('quiz-total').textContent = quizTotal;
+        }
+
+        function nextQuestion() {
+            generateQuizQuestion();
+        }
+
+        // Typing Challenge
+        let typingTimer;
+        let typingSeconds = 0;
+        let typingCorrect = 0;
+        let typingWrong = 0;
+        let currentTypingVerb;
+
+        function generateTypingChallenge() {
+            currentTypingVerb = verbs[Math.floor(Math.random() * verbs.length)];
+            const types = [
+                { q: `Type the preterite of "${currentTypingVerb[0]}"`, a: currentTypingVerb[1] },
+                { q: `Type the past participle of "${currentTypingVerb[0]}"`, a: currentTypingVerb[2] },
+                { q: `Type the French translation of "${currentTypingVerb[0]}"`, a: currentTypingVerb[3] }
+            ];
+            const challenge = types[Math.floor(Math.random() * types.length)];
+            
+            document.getElementById('typing-question').textContent = challenge.q;
+            document.getElementById('typing-input').value = '';
+            document.getElementById('typing-input').dataset.answer = challenge.a;
+            document.getElementById('typing-result').innerHTML = '';
+            
+            clearInterval(typingTimer);
+            typingSeconds = 0;
+            typingTimer = setInterval(() => {
+                typingSeconds++;
+                document.getElementById('typing-timer').textContent = typingSeconds;
+            }, 1000);
+        }
+
+        document.getElementById('typing-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                clearInterval(typingTimer);
+                const userAnswer = e.target.value.trim().toLowerCase();
+                const correctAnswer = e.target.dataset.answer.toLowerCase();
+                const resultDiv = document.getElementById('typing-result');
+                
+                if (userAnswer === correctAnswer || correctAnswer.includes(userAnswer)) {
+                    typingCorrect++;
+                    resultDiv.innerHTML = '<div class="result-message correct">✓ Correct! Well done!</div>';
+                    // Celebrate every 3 correct answers
+                    if (typingCorrect % 3 === 0) {
+                        celebrate();
+                    }
+                } else {
+                    typingWrong++;
+                    resultDiv.innerHTML = `<div class="result-message incorrect">✗ Incorrect. The answer was: ${e.target.dataset.answer}</div>`;
+                }
+                
+                document.getElementById('typing-correct').textContent = typingCorrect;
+                document.getElementById('typing-wrong').textContent = typingWrong;
+                
+                setTimeout(() => {
+                    generateTypingChallenge();
+                }, 2000);
+            }
+        });
+
+        // Memory Game
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+
+        function initMemoryGame() {
+            matchedPairs = 0;
+            moves = 0;
+            flippedCards = [];
+            document.getElementById('moves').textContent = moves;
+            document.getElementById('matches').textContent = matchedPairs;
+            
+            const selectedVerbs = [...verbs].sort(() => Math.random() - 0.5).slice(0, 8);
+            memoryCards = [];
+            
+            selectedVerbs.forEach((verb, idx) => {
+                memoryCards.push({ id: idx, type: 'infinitive', text: verb[0], match: idx });
+                memoryCards.push({ id: idx + 8, type: 'past', text: verb[2], match: idx });
+            });
+            
+            memoryCards.sort(() => Math.random() - 0.5);
+            
+            const board = document.getElementById('game-board');
+            board.innerHTML = '';
+            
+            memoryCards.forEach((card, index) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'card';
+                cardDiv.dataset.index = index;
+                cardDiv.dataset.match = card.match;
+                
+                const cardBack = document.createElement('div');
+                cardBack.className = 'card-back';
+                cardBack.innerHTML = '<i class="fas fa-question"></i>';
+                
+                const cardFront = document.createElement('div');
+                cardFront.className = 'card-front';
+                cardFront.textContent = card.text;
+                
+                cardDiv.appendChild(cardBack);
+                cardDiv.appendChild(cardFront);
+                cardDiv.addEventListener('click', () => flipCard(cardDiv, card.text));
+                board.appendChild(cardDiv);
+            });
+        }
+
+        function flipCard(cardElement, text) {
+            if (flippedCards.length >= 2 || cardElement.classList.contains('flipped') || cardElement.classList.contains('matched')) {
+                return;
+            }
+            
+            cardElement.classList.add('flipped');
+            flippedCards.push(cardElement);
+            
+            if (flippedCards.length === 2) {
+                moves++;
+                document.getElementById('moves').textContent = moves;
+                
+                const card1Match = flippedCards[0].dataset.match;
+                const card2Match = flippedCards[1].dataset.match;
+                
+                if (card1Match === card2Match) {
+                    setTimeout(() => {
+                        flippedCards[0].classList.add('matched');
+                        flippedCards[1].classList.add('matched');
+                        matchedPairs++;
+                        document.getElementById('matches').textContent = matchedPairs;
+                        flippedCards = [];
+                        
+                        if (matchedPairs === 8) {
+                            setTimeout(() => {
+                                celebrate();
+                                alert(`🎉 Congratulations! You won in ${moves} moves!`);
+                            }, 500);
+                        }
+                    }, 500);
+                } else {
+                    setTimeout(() => {
+                        flippedCards[0].classList.remove('flipped');
+                        flippedCards[1].classList.remove('flipped');
+                        flippedCards = [];
+                    }, 1000);
+                }
+            }
+        }
+
+        // Initialize
+        populateTable();
+        loadFlashcard();
+        generateQuizQuestion();
+        generateTypingChallenge();
+        initMemoryGame();
+    </script>
+</body>
+</html>
