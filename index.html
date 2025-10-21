@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Irregular Verbs Learning Hub</title>
+    <title>30-Day Verbs Challenge - École St Pierre Claver</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -13,18 +13,22 @@
         }
 
         :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --accent: #ffd700;
+            --primary: #006b3f; /* Ghana green */
+            --secondary: #fcd116; /* Ghana yellow */
+            --accent: #ce1126; /* Ghana red */
             --success: #4caf50;
             --danger: #f44336;
             --light: #f8f9fa;
             --dark: #333;
+            --ghana-red: #ce1126;
+            --ghana-yellow: #fcd116;
+            --ghana-green: #006b3f;
+            --ghana-black: #000000;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--ghana-green) 0%, var(--ghana-yellow) 100%);
             min-height: 100vh;
             padding: 20px;
             color: var(--dark);
@@ -41,12 +45,36 @@
             margin-bottom: 30px;
             padding: 20px;
             animation: fadeInDown 1s;
+            background: linear-gradient(135deg, var(--ghana-red) 0%, var(--ghana-green) 100%);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--ghana-red) 33%, var(--ghana-yellow) 33%, var(--ghana-yellow) 66%, var(--ghana-green) 66%);
+            opacity: 0.2;
         }
 
         h1 {
             font-size: 2.8em;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        .school-name {
+            font-size: 1.5em;
+            color: var(--ghana-yellow);
+            margin-bottom: 10px;
+            font-weight: bold;
         }
 
         .subtitle {
@@ -54,6 +82,13 @@
             opacity: 0.9;
             max-width: 600px;
             margin: 0 auto;
+            color: white;
+        }
+
+        .developer {
+            margin-top: 10px;
+            font-style: italic;
+            color: var(--ghana-yellow);
         }
 
         .tabs {
@@ -90,8 +125,8 @@
         }
 
         .tab-btn.active {
-            background: var(--accent);
-            color: var(--secondary);
+            background: var(--ghana-yellow);
+            color: var(--ghana-green);
         }
 
         .content-area {
@@ -134,6 +169,243 @@
             60% {transform: translateY(-5px);}
         }
 
+        /* 30-Day Challenge Styles */
+        .challenge-container {
+            text-align: center;
+        }
+
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .challenge-title {
+            font-size: 28px;
+            color: var(--ghana-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .challenge-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background: var(--light);
+            padding: 10px 15px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--ghana-green);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .calendar-header {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .calendar-day {
+            font-weight: bold;
+            text-align: center;
+            color: var(--ghana-green);
+        }
+
+        .day {
+            aspect-ratio: 1;
+            background: var(--light);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .day:hover {
+            transform: scale(1.05);
+        }
+
+        .day.current {
+            background: var(--ghana-yellow);
+            color: var(--ghana-green);
+            font-weight: bold;
+        }
+
+        .day.completed {
+            background: var(--success);
+            color: white;
+        }
+
+        .day-number {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .day-status {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .daily-goals {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .daily-goals h3 {
+            color: var(--ghana-green);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .goals-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .goal-item:hover {
+            transform: translateX(5px);
+        }
+
+        .goal-item.completed {
+            background: var(--success);
+            color: white;
+        }
+
+        .goal-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--ghana-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .goal-item.completed .goal-checkbox {
+            background: white;
+            color: var(--success);
+        }
+
+        .goal-text {
+            flex: 1;
+        }
+
+        .progress-section {
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #eee;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--success);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .rewards {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .reward {
+            background: white;
+            border: 2px solid var(--ghana-yellow);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            min-width: 150px;
+            transition: all 0.3s;
+        }
+
+        .reward.achieved {
+            background: var(--ghana-yellow);
+            color: var(--ghana-green);
+            transform: scale(1.05);
+        }
+
+        .reward-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .reward-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .reward-desc {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .reward.achieved .reward-desc {
+            color: var(--ghana-green);
+        }
+
         /* Search and Filter */
         .search-box {
             margin-bottom: 20px;
@@ -143,7 +415,7 @@
         .search-box input {
             width: 100%;
             padding: 15px 20px;
-            border: 2px solid var(--primary);
+            border: 2px solid var(--ghana-green);
             border-radius: 25px;
             font-size: 16px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -164,7 +436,7 @@
         }
 
         th {
-            background: var(--primary);
+            background: var(--ghana-green);
             color: white;
             padding: 15px;
             position: sticky;
@@ -190,7 +462,7 @@
         .audio-btn {
             background: none;
             border: none;
-            color: var(--primary);
+            color: var(--ghana-green);
             cursor: pointer;
             font-size: 18px;
             margin-left: 8px;
@@ -198,7 +470,7 @@
         }
 
         .audio-btn:hover {
-            color: var(--secondary);
+            color: var(--ghana-red);
             animation: pulse 0.5s;
         }
 
@@ -228,7 +500,7 @@
             left: 0;
             width: 100%;
             height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, var(--ghana-red), var(--ghana-yellow), var(--ghana-green));
         }
 
         .question {
@@ -248,7 +520,7 @@
         .option-btn {
             padding: 15px;
             background: white;
-            border: 2px solid var(--primary);
+            border: 2px solid var(--ghana-green);
             border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
@@ -257,7 +529,7 @@
         }
 
         .option-btn:hover {
-            background: var(--primary);
+            background: var(--ghana-green);
             color: white;
             transform: scale(1.05);
         }
@@ -285,14 +557,14 @@
         .score {
             font-size: 20px;
             font-weight: 600;
-            color: var(--primary);
+            color: var(--ghana-green);
             margin-top: 20px;
         }
 
         .next-btn {
             margin-top: 20px;
             padding: 12px 30px;
-            background: var(--primary);
+            background: var(--ghana-green);
             color: white;
             border: none;
             border-radius: 25px;
@@ -307,7 +579,7 @@
         }
 
         .next-btn:hover {
-            background: var(--secondary);
+            background: var(--ghana-red);
             transform: translateY(-2px);
         }
 
@@ -323,7 +595,7 @@
 
         .card {
             aspect-ratio: 1;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--ghana-green) 0%, var(--ghana-red) 100%);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -345,7 +617,7 @@
         .card.flipped {
             background: white;
             color: var(--dark);
-            border: 2px solid var(--primary);
+            border: 2px solid var(--ghana-green);
             transform: rotateY(180deg);
         }
 
@@ -369,7 +641,7 @@
         }
 
         .card-back {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--ghana-green) 0%, var(--ghana-red) 100%);
             font-size: 32px;
         }
 
@@ -421,13 +693,13 @@
         }
 
         .flashcard-front {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--ghana-green) 0%, var(--ghana-red) 100%);
             color: white;
         }
 
         .flashcard-back {
             background: white;
-            border: 3px solid var(--primary);
+            border: 3px solid var(--ghana-green);
             transform: rotateY(180deg);
         }
 
@@ -458,7 +730,7 @@
 
         .control-btn {
             padding: 10px 20px;
-            background: var(--primary);
+            background: var(--ghana-green);
             color: white;
             border: none;
             border-radius: 25px;
@@ -471,7 +743,7 @@
         }
 
         .control-btn:hover {
-            background: var(--secondary);
+            background: var(--ghana-red);
             transform: translateY(-2px);
         }
 
@@ -500,7 +772,7 @@
             max-width: 500px;
             padding: 15px;
             font-size: 18px;
-            border: 2px solid var(--primary);
+            border: 2px solid var(--ghana-green);
             border-radius: 10px;
             margin-top: 20px;
         }
@@ -508,7 +780,7 @@
         .timer {
             font-size: 24px;
             font-weight: 600;
-            color: var(--primary);
+            color: var(--ghana-green);
             margin: 20px 0;
         }
 
@@ -553,7 +825,7 @@
             position: fixed;
             width: 10px;
             height: 10px;
-            background: var(--accent);
+            background: var(--ghana-yellow);
             top: 0;
             opacity: 0;
         }
@@ -561,6 +833,133 @@
         @keyframes confetti-fall {
             0% { top: -10px; opacity: 1; }
             100% { top: 100vh; opacity: 0; }
+        }
+
+        /* Verb Categories */
+        .verb-category {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            background: var(--ghana-yellow);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .category-btn:hover {
+            background: var(--ghana-green);
+            color: white;
+        }
+
+        .category-btn.active {
+            background: var(--ghana-red);
+            color: white;
+        }
+
+        .verb-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stat-box {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--ghana-green);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .verb-of-day {
+            background: linear-gradient(135deg, var(--ghana-yellow) 0%, var(--ghana-green) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .verb-of-day h3 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .verb-of-day-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .verb-of-day-item {
+            text-align: center;
+        }
+
+        .verb-of-day-item .label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .verb-of-day-item .value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .motivation {
+            text-align: center;
+            font-style: italic;
+            margin: 20px 0;
+            color: var(--ghana-green);
+            font-size: 18px;
+        }
+
+        .achievements {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .achievement {
+            background: var(--ghana-yellow);
+            color: var(--ghana-green);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .achievement.locked {
+            background: #ddd;
+            color: #999;
         }
 
         /* Responsive Design */
@@ -580,6 +979,18 @@
             .flashcard-front h2 {
                 font-size: 36px;
             }
+            
+            .calendar {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .challenge-header {
+                flex-direction: column;
+            }
+            
+            .challenge-stats {
+                justify-content: center;
+            }
         }
 
         @media (max-width: 480px) {
@@ -594,6 +1005,10 @@
             .tab-btn {
                 width: 100%;
             }
+            
+            .calendar {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
         /* Fun Elements */
@@ -603,7 +1018,7 @@
             right: 20px;
             width: 80px;
             height: 80px;
-            background: var(--accent);
+            background: var(--ghana-yellow);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -633,12 +1048,15 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎓 Interactive Verbs Learning Hub</h1>
-            <p class="subtitle">Master English irregular verbs with audio, games, and fun activities!</p>
+            <h1>🎓 30-Day Verbs Challenge</h1>
+            <div class="school-name">École St Pierre Claver</div>
+            <p class="subtitle">Master English irregular verbs in just 30 days with our structured learning plan!</p>
+            <p class="developer">Developed by Felix Atoma</p>
         </header>
 
         <div class="tabs">
-            <button class="tab-btn active" data-tab="browse"><i class="fas fa-book"></i> Browse Verbs</button>
+            <button class="tab-btn active" data-tab="challenge"><i class="fas fa-calendar-alt"></i> 30-Day Challenge</button>
+            <button class="tab-btn" data-tab="browse"><i class="fas fa-book"></i> Browse Verbs</button>
             <button class="tab-btn" data-tab="flashcards"><i class="fas fa-id-card"></i> Flashcards</button>
             <button class="tab-btn" data-tab="quiz"><i class="fas fa-question-circle"></i> Quiz</button>
             <button class="tab-btn" data-tab="typing"><i class="fas fa-keyboard"></i> Typing Challenge</button>
@@ -646,11 +1064,125 @@
         </div>
 
         <div class="content-area">
+            <!-- 30-Day Challenge Tab -->
+            <div class="tab-content active" id="challenge">
+                <div class="challenge-container">
+                    <div class="challenge-header">
+                        <div class="challenge-title">
+                            <i class="fas fa-trophy"></i> 30-Day Verbs Challenge
+                        </div>
+                        <div class="challenge-stats">
+                            <div class="stat-box">
+                                <div class="stat-value" id="challenge-day">1</div>
+                                <div class="stat-label">Current Day</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" id="challenge-progress">0%</div>
+                                <div class="stat-label">Overall Progress</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" id="challenge-streak">0</div>
+                                <div class="stat-label">Day Streak</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar">
+                        <div class="calendar-header">
+                            <div class="calendar-day">Sun</div>
+                            <div class="calendar-day">Mon</div>
+                            <div class="calendar-day">Tue</div>
+                            <div class="calendar-day">Wed</div>
+                            <div class="calendar-day">Thu</div>
+                            <div class="calendar-day">Fri</div>
+                            <div class="calendar-day">Sat</div>
+                        </div>
+                        <!-- Calendar days will be generated by JavaScript -->
+                    </div>
+
+                    <div class="daily-goals">
+                        <h3><i class="fas fa-tasks"></i> Today's Learning Goals</h3>
+                        <div class="goals-list" id="daily-goals">
+                            <!-- Goals will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="progress-section">
+                        <h3>Overall Challenge Progress</h3>
+                        <div class="progress-bar">
+                            <div class="progress" id="overall-progress" style="width: 0%">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="rewards">
+                        <div class="reward" id="reward-7">
+                            <div class="reward-icon"><i class="fas fa-medal"></i></div>
+                            <div class="reward-title">7-Day Streak</div>
+                            <div class="reward-desc">Complete 7 consecutive days</div>
+                        </div>
+                        <div class="reward" id="reward-15">
+                            <div class="reward-icon"><i class="fas fa-trophy"></i></div>
+                            <div class="reward-title">Halfway There</div>
+                            <div class="reward-desc">Complete 15 days</div>
+                        </div>
+                        <div class="reward" id="reward-30">
+                            <div class="reward-icon"><i class="fas fa-crown"></i></div>
+                            <div class="reward-title">Verb Master</div>
+                            <div class="reward-desc">Complete all 30 days</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Browse Verbs Tab -->
-            <div class="tab-content active" id="browse">
+            <div class="tab-content" id="browse">
+                <div class="verb-of-day">
+                    <h3><i class="fas fa-star"></i> Verb of the Day</h3>
+                    <div class="verb-of-day-content">
+                        <div class="verb-of-day-item">
+                            <div class="label">Infinitive</div>
+                            <div class="value" id="verb-of-day-infinitive">be</div>
+                        </div>
+                        <div class="verb-of-day-item">
+                            <div class="label">Preterite</div>
+                            <div class="value" id="verb-of-day-preterite">was/were</div>
+                        </div>
+                        <div class="verb-of-day-item">
+                            <div class="label">Past Participle</div>
+                            <div class="value" id="verb-of-day-past">been</div>
+                        </div>
+                        <div class="verb-of-day-item">
+                            <div class="label">French</div>
+                            <div class="value" id="verb-of-day-french">être</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="verb-stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="total-verbs">0</div>
+                        <div class="stat-label">Total Verbs</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="mastered-verbs">0</div>
+                        <div class="stat-label">Mastered</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="practice-count">0</div>
+                        <div class="stat-label">Practice Sessions</div>
+                    </div>
+                </div>
+
                 <div class="search-box">
                     <input type="text" id="searchInput" placeholder="🔍 Search for a verb...">
                 </div>
+
+                <div class="verb-category">
+                    <button class="category-btn active" data-category="all">All Verbs</button>
+                    <button class="category-btn" data-category="common">Most Common</button>
+                    <button class="category-btn" data-category="difficult">Most Difficult</button>
+                </div>
+
                 <div class="progress-bar">
                     <div class="progress" id="progressBar" style="width: 0%"></div>
                 </div>
@@ -662,6 +1194,7 @@
                                 <th>Preterite</th>
                                 <th>Past Participle</th>
                                 <th>French Translation</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="verbTableBody"></tbody>
@@ -673,6 +1206,7 @@
             <div class="tab-content" id="flashcards">
                 <div class="flashcard-container">
                     <h2>Click the card to flip it!</h2>
+                    <div class="motivation" id="flashcard-motivation">Keep going! You're doing great!</div>
                     <div class="flashcard" id="flashcard">
                         <div class="flashcard-inner">
                             <div class="flashcard-front">
@@ -702,11 +1236,13 @@
                     </div>
                     <div class="flashcard-controls">
                         <button class="control-btn" onclick="previousFlashcard()"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button class="control-btn" onclick="markAsKnown()"><i class="fas fa-check"></i> I Know This</button>
                         <button class="control-btn" onclick="shuffleFlashcards()"><i class="fas fa-random"></i> Shuffle</button>
                         <button class="control-btn" onclick="nextFlashcard()">Next <i class="fas fa-arrow-right"></i></button>
                     </div>
                     <div class="stats">
-                        Card <span id="flashcard-index">1</span> of <span id="flashcard-total">0</span>
+                        Card <span id="flashcard-index">1</span> of <span id="flashcard-total">0</span> | 
+                        Known: <span id="flashcard-known">0</span>
                     </div>
                 </div>
             </div>
@@ -715,6 +1251,10 @@
             <div class="tab-content" id="quiz">
                 <div class="quiz-container">
                     <h2>Test Your Knowledge!</h2>
+                    <div class="achievements">
+                        <div class="achievement" id="quiz-streak"><i class="fas fa-fire"></i> Streak: 0</div>
+                        <div class="achievement" id="quiz-perfect"><i class="fas fa-trophy"></i> Perfect Rounds: 0</div>
+                    </div>
                     <div class="question-box">
                         <div class="question" id="quiz-question">Loading question...</div>
                         <div class="options" id="quiz-options"></div>
@@ -731,6 +1271,10 @@
                 <div class="typing-game">
                     <h2><i class="fas fa-keyboard"></i> Typing Challenge</h2>
                     <p>Type the correct form as quickly as possible!</p>
+                    <div class="achievements">
+                        <div class="achievement" id="typing-streak"><i class="fas fa-bolt"></i> Current Streak: 0</div>
+                        <div class="achievement" id="typing-best"><i class="fas fa-crown"></i> Best Time: --</div>
+                    </div>
                     <div class="typing-prompt">
                         <div class="question" id="typing-question">Loading...</div>
                         <input type="text" class="typing-input" id="typing-input" placeholder="Type your answer here...">
@@ -869,6 +1413,291 @@
             ["write", "wrote", "written", "écrire"]
         ];
 
+        // Most common verbs for filtering
+        const commonVerbs = ["be", "have", "do", "say", "get", "make", "go", "know", "take", "see", "come", "think", "look", "want", "give", "use", "find", "tell", "ask", "work"];
+
+        // 30-Day Challenge Data
+        const challengeData = {
+            currentDay: 1,
+            completedDays: [],
+            dayStreak: 0,
+            lastActivityDate: null,
+            dailyGoals: {},
+            rewards: {
+                streak7: false,
+                halfway: false,
+                master: false
+            }
+        };
+
+        // Daily goals for each day
+        const dailyGoals = {
+            1: ["Learn 5 basic verbs", "Complete 1 quiz", "Review flashcards for 5 minutes"],
+            2: ["Learn 5 new verbs", "Complete 2 quizzes", "Practice typing 5 verbs"],
+            3: ["Review all 10 verbs learned", "Play memory game", "Complete 3 quizzes"],
+            4: ["Learn 5 new verbs", "Practice with flashcards", "Complete typing challenge"],
+            5: ["Review all 15 verbs", "Take a comprehensive quiz", "Play memory game"],
+            6: ["Learn 5 new verbs", "Practice pronunciation", "Complete 2 quizzes"],
+            7: ["Review all 20 verbs", "Take a progress test", "Celebrate 1st week!"],
+            8: ["Learn 5 new verbs", "Focus on pronunciation", "Complete 2 quizzes"],
+            9: ["Practice with flashcards", "Play memory game", "Complete typing challenge"],
+            10: ["Review all 25 verbs", "Take a comprehensive quiz", "Practice difficult verbs"],
+            11: ["Learn 5 new verbs", "Focus on past participles", "Complete 2 quizzes"],
+            12: ["Practice with flashcards", "Complete typing challenge", "Play memory game"],
+            13: ["Review all 30 verbs", "Take a progress test", "Focus on pronunciation"],
+            14: ["Learn 5 new verbs", "Practice all verb forms", "Complete 3 quizzes"],
+            15: ["Review all 35 verbs", "Take halfway assessment", "Celebrate halfway point!"],
+            16: ["Learn 5 new verbs", "Focus on preterite forms", "Complete 2 quizzes"],
+            17: ["Practice with flashcards", "Play memory game", "Complete typing challenge"],
+            18: ["Review all 40 verbs", "Take a comprehensive quiz", "Practice difficult verbs"],
+            19: ["Learn 5 new verbs", "Focus on pronunciation", "Complete 2 quizzes"],
+            20: ["Practice with flashcards", "Complete typing challenge", "Play memory game"],
+            21: ["Review all 45 verbs", "Take a progress test", "Three weeks complete!"],
+            22: ["Learn 5 new verbs", "Practice all verb forms", "Complete 2 quizzes"],
+            23: ["Practice with flashcards", "Play memory game", "Complete typing challenge"],
+            24: ["Review all 50 verbs", "Take a comprehensive quiz", "Focus on difficult verbs"],
+            25: ["Learn 5 new verbs", "Practice pronunciation", "Complete 2 quizzes"],
+            26: ["Practice with flashcards", "Complete typing challenge", "Play memory game"],
+            27: ["Review all 55 verbs", "Take a progress test", "One week to go!"],
+            28: ["Learn 5 new verbs", "Focus on all verb forms", "Complete 2 quizzes"],
+            29: ["Practice with flashcards", "Play memory game", "Complete typing challenge"],
+            30: ["Review all 60 verbs", "Take final mastery test", "Complete all activities", "Claim your reward!"]
+        };
+
+        // User progress tracking
+        let userProgress = {
+            masteredVerbs: [],
+            practiceSessions: 0,
+            quizStreak: 0,
+            quizPerfectRounds: 0,
+            typingStreak: 0,
+            typingBestTime: null,
+            quizScore: 0,
+            quizTotal: 0,
+            typingCorrect: 0,
+            typingWrong: 0
+        };
+
+        // Load user progress from localStorage
+        function loadUserProgress() {
+            const savedProgress = localStorage.getItem('verbLearningProgress');
+            if (savedProgress) {
+                userProgress = JSON.parse(savedProgress);
+            }
+            updateStats();
+        }
+
+        // Save user progress to localStorage
+        function saveUserProgress() {
+            localStorage.setItem('verbLearningProgress', JSON.stringify(userProgress));
+            updateStats();
+        }
+
+        // Load challenge data from localStorage
+        function loadChallengeData() {
+            const savedData = localStorage.getItem('verbChallengeData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                Object.assign(challengeData, data);
+            }
+            updateChallengeUI();
+        }
+
+        // Save challenge data to localStorage
+        function saveChallengeData() {
+            localStorage.setItem('verbChallengeData', JSON.stringify(challengeData));
+            updateChallengeUI();
+        }
+
+        // Update the challenge UI
+        function updateChallengeUI() {
+            // Update stats
+            document.getElementById('challenge-day').textContent = challengeData.currentDay;
+            document.getElementById('challenge-streak').textContent = challengeData.dayStreak;
+            
+            // Calculate and update progress
+            const progress = (challengeData.completedDays.length / 30) * 100;
+            document.getElementById('challenge-progress').textContent = `${Math.round(progress)}%`;
+            document.getElementById('overall-progress').style.width = `${progress}%`;
+            document.getElementById('overall-progress').textContent = `${Math.round(progress)}%`;
+            
+            // Update calendar
+            updateCalendar();
+            
+            // Update daily goals
+            updateDailyGoals();
+            
+            // Update rewards
+            updateRewards();
+        }
+
+        // Update the calendar display
+        function updateCalendar() {
+            const calendar = document.querySelector('.calendar');
+            // Clear existing days (except header)
+            const header = document.querySelector('.calendar-header');
+            calendar.innerHTML = '';
+            calendar.appendChild(header);
+            
+            // Create days
+            for (let i = 1; i <= 30; i++) {
+                const day = document.createElement('div');
+                day.className = 'day';
+                if (i === challengeData.currentDay) {
+                    day.classList.add('current');
+                }
+                if (challengeData.completedDays.includes(i)) {
+                    day.classList.add('completed');
+                }
+                
+                day.innerHTML = `
+                    <div class="day-number">${i}</div>
+                    <div class="day-status">${challengeData.completedDays.includes(i) ? 'Completed' : i === challengeData.currentDay ? 'Today' : ''}</div>
+                `;
+                
+                day.addEventListener('click', () => {
+                    if (i <= challengeData.currentDay) {
+                        challengeData.currentDay = i;
+                        saveChallengeData();
+                    }
+                });
+                
+                calendar.appendChild(day);
+            }
+        }
+
+        // Update daily goals display
+        function updateDailyGoals() {
+            const goalsList = document.getElementById('daily-goals');
+            goalsList.innerHTML = '';
+            
+            const todayGoals = dailyGoals[challengeData.currentDay] || ["Review previous verbs", "Practice with flashcards", "Complete a quiz"];
+            const completedGoals = challengeData.dailyGoals[challengeData.currentDay] || [];
+            
+            todayGoals.forEach((goal, index) => {
+                const goalItem = document.createElement('div');
+                goalItem.className = 'goal-item';
+                if (completedGoals.includes(index)) {
+                    goalItem.classList.add('completed');
+                }
+                
+                goalItem.innerHTML = `
+                    <div class="goal-checkbox">${completedGoals.includes(index) ? '✓' : ''}</div>
+                    <div class="goal-text">${goal}</div>
+                `;
+                
+                goalItem.addEventListener('click', () => {
+                    toggleGoalCompletion(index);
+                });
+                
+                goalsList.appendChild(goalItem);
+            });
+        }
+
+        // Toggle goal completion
+        function toggleGoalCompletion(goalIndex) {
+            if (!challengeData.dailyGoals[challengeData.currentDay]) {
+                challengeData.dailyGoals[challengeData.currentDay] = [];
+            }
+            
+            const goals = challengeData.dailyGoals[challengeData.currentDay];
+            if (goals.includes(goalIndex)) {
+                const index = goals.indexOf(goalIndex);
+                goals.splice(index, 1);
+            } else {
+                goals.push(goalIndex);
+                
+                // Check if all goals are completed
+                const todayGoals = dailyGoals[challengeData.currentDay] || ["Review previous verbs", "Practice with flashcards", "Complete a quiz"];
+                if (goals.length === todayGoals.length) {
+                    completeDay();
+                }
+            }
+            
+            saveChallengeData();
+        }
+
+        // Complete the current day
+        function completeDay() {
+            if (!challengeData.completedDays.includes(challengeData.currentDay)) {
+                challengeData.completedDays.push(challengeData.currentDay);
+                
+                // Update streak
+                updateStreak();
+                
+                // Move to next day if not the last day
+                if (challengeData.currentDay < 30) {
+                    challengeData.currentDay++;
+                    challengeData.dailyGoals[challengeData.currentDay] = [];
+                }
+                
+                saveChallengeData();
+                celebrate();
+            }
+        }
+
+        // Update day streak
+        function updateStreak() {
+            const today = new Date().toDateString();
+            
+            if (challengeData.lastActivityDate !== today) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayString = yesterday.toDateString();
+                
+                if (challengeData.lastActivityDate === yesterdayString) {
+                    challengeData.dayStreak++;
+                } else {
+                    challengeData.dayStreak = 1;
+                }
+                
+                challengeData.lastActivityDate = today;
+            }
+            
+            // Check for reward milestones
+            if (challengeData.dayStreak >= 7 && !challengeData.rewards.streak7) {
+                challengeData.rewards.streak7 = true;
+            }
+            if (challengeData.completedDays.length >= 15 && !challengeData.rewards.halfway) {
+                challengeData.rewards.halfway = true;
+            }
+            if (challengeData.completedDays.length >= 30 && !challengeData.rewards.master) {
+                challengeData.rewards.master = true;
+            }
+        }
+
+        // Update rewards display
+        function updateRewards() {
+            document.getElementById('reward-7').classList.toggle('achieved', challengeData.rewards.streak7);
+            document.getElementById('reward-15').classList.toggle('achieved', challengeData.rewards.halfway);
+            document.getElementById('reward-30').classList.toggle('achieved', challengeData.rewards.master);
+        }
+
+        // Update statistics display
+        function updateStats() {
+            document.getElementById('total-verbs').textContent = verbs.length;
+            document.getElementById('mastered-verbs').textContent = userProgress.masteredVerbs.length;
+            document.getElementById('practice-count').textContent = userProgress.practiceSessions;
+            document.getElementById('quiz-streak').innerHTML = `<i class="fas fa-fire"></i> Streak: ${userProgress.quizStreak}`;
+            document.getElementById('quiz-perfect').innerHTML = `<i class="fas fa-trophy"></i> Perfect Rounds: ${userProgress.quizPerfectRounds}`;
+            document.getElementById('typing-streak').innerHTML = `<i class="fas fa-bolt"></i> Current Streak: ${userProgress.typingStreak}`;
+            document.getElementById('typing-best').innerHTML = `<i class="fas fa-crown"></i> Best Time: ${userProgress.typingBestTime || '--'}`;
+        }
+
+        // Set verb of the day
+        function setVerbOfTheDay() {
+            // Use date to select a consistent verb for the day
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            const verbIndex = dayOfYear % verbs.length;
+            const verb = verbs[verbIndex];
+            
+            document.getElementById('verb-of-day-infinitive').textContent = verb[0];
+            document.getElementById('verb-of-day-preterite').textContent = verb[1];
+            document.getElementById('verb-of-day-past').textContent = verb[2];
+            document.getElementById('verb-of-day-french').textContent = verb[3];
+        }
+
         // Tab switching
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -876,14 +1705,38 @@
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                 btn.classList.add('active');
                 document.getElementById(btn.dataset.tab).classList.add('active');
+                
+                // Track practice sessions
+                if (btn.dataset.tab !== 'challenge' && btn.dataset.tab !== 'browse') {
+                    userProgress.practiceSessions++;
+                    saveUserProgress();
+                }
+            });
+        });
+
+        // Category filtering
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                populateTable(document.getElementById('searchInput').value, btn.dataset.category);
             });
         });
 
         // Populate verb table
-        function populateTable(filter = '') {
+        function populateTable(filter = '', category = 'all') {
             const tbody = document.getElementById('verbTableBody');
             tbody.innerHTML = '';
-            const filteredVerbs = verbs.filter(v => v.join(' ').toLowerCase().includes(filter.toLowerCase()));
+            
+            let filteredVerbs = verbs.filter(v => v.join(' ').toLowerCase().includes(filter.toLowerCase()));
+            
+            // Apply category filter
+            if (category === 'common') {
+                filteredVerbs = filteredVerbs.filter(v => commonVerbs.includes(v[0]));
+            } else if (category === 'difficult') {
+                // Identify difficult verbs based on user progress
+                filteredVerbs = filteredVerbs.filter(v => !userProgress.masteredVerbs.includes(v[0]));
+            }
             
             filteredVerbs.forEach(verb => {
                 const row = tbody.insertRow();
@@ -903,6 +1756,14 @@
                 // Add French translation with translation button
                 const frenchCell = row.insertCell();
                 frenchCell.innerHTML = `${verb[3]} <button class="audio-btn" onclick="speakText('${verb[3]}', 'fr-FR')"><i class="fas fa-language"></i></button>`;
+                
+                // Add status indicator
+                const statusCell = row.insertCell();
+                if (userProgress.masteredVerbs.includes(verb[0])) {
+                    statusCell.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> Mastered';
+                } else {
+                    statusCell.innerHTML = '<i class="fas fa-book" style="color: var(--ghana-yellow);"></i> Learning';
+                }
             });
             
             // Update progress bar
@@ -911,7 +1772,8 @@
         }
 
         document.getElementById('searchInput').addEventListener('input', (e) => {
-            populateTable(e.target.value);
+            const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+            populateTable(e.target.value, activeCategory);
         });
 
         // Text-to-speech function
@@ -971,6 +1833,21 @@
             document.getElementById('flashcard-index').textContent = currentFlashcardIndex + 1;
             document.getElementById('flashcard-total').textContent = flashcardDeck.length;
             document.getElementById('flashcard').classList.remove('flipped');
+            
+            // Update known count
+            const knownCount = flashcardDeck.filter(v => userProgress.masteredVerbs.includes(v[0])).length;
+            document.getElementById('flashcard-known').textContent = knownCount;
+            
+            // Update motivation message
+            const motivationMessages = [
+                "Keep going! You're doing great!",
+                "Every verb you learn brings you closer to mastery!",
+                "Practice makes perfect!",
+                "You're building your English skills one verb at a time!",
+                "Consistency is key to language learning!"
+            ];
+            const randomMessage = motivationMessages[Math.floor(Math.random() * motivationMessages.length)];
+            document.getElementById('flashcard-motivation').textContent = randomMessage;
         }
 
         document.getElementById('flashcard').addEventListener('click', function() {
@@ -993,11 +1870,24 @@
             loadFlashcard();
         }
 
+        function markAsKnown() {
+            const currentVerb = flashcardDeck[currentFlashcardIndex][0];
+            if (!userProgress.masteredVerbs.includes(currentVerb)) {
+                userProgress.masteredVerbs.push(currentVerb);
+                saveUserProgress();
+                loadFlashcard();
+                
+                // Celebrate if user has mastered a certain number of verbs
+                if (userProgress.masteredVerbs.length % 5 === 0) {
+                    celebrate();
+                }
+            }
+        }
+
         // Quiz
-        let quizScore = 0;
-        let quizTotal = 0;
         let currentQuizVerb;
         let quizAnswered = false;
+        let currentQuizStreak = 0;
 
         function generateQuizQuestion() {
             quizAnswered = false;
@@ -1037,20 +1927,29 @@
         function checkAnswer(btn, selected, correct) {
             if (quizAnswered) return;
             quizAnswered = true;
-            quizTotal++;
+            userProgress.quizTotal++;
             
             const allButtons = document.querySelectorAll('.option-btn');
             allButtons.forEach(b => b.style.pointerEvents = 'none');
             
             if (selected === correct) {
                 btn.classList.add('correct');
-                quizScore++;
+                userProgress.quizScore++;
+                currentQuizStreak++;
+                
+                // Update streak if it's higher than current
+                if (currentQuizStreak > userProgress.quizStreak) {
+                    userProgress.quizStreak = currentQuizStreak;
+                    saveUserProgress();
+                }
+                
                 // Celebrate correct answer
-                if (quizScore % 5 === 0) {
+                if (userProgress.quizScore % 5 === 0) {
                     celebrate();
                 }
             } else {
                 btn.classList.add('incorrect');
+                currentQuizStreak = 0;
                 allButtons.forEach(b => {
                     if (b.textContent === correct) {
                         b.classList.add('correct');
@@ -1058,20 +1957,28 @@
                 });
             }
             
-            document.getElementById('quiz-score').textContent = quizScore;
-            document.getElementById('quiz-total').textContent = quizTotal;
+            document.getElementById('quiz-score').textContent = userProgress.quizScore;
+            document.getElementById('quiz-total').textContent = userProgress.quizTotal;
+            saveUserProgress();
         }
 
         function nextQuestion() {
             generateQuizQuestion();
+            
+            // Check for perfect round
+            if (userProgress.quizTotal > 0 && userProgress.quizScore === userProgress.quizTotal && userProgress.quizTotal % 10 === 0) {
+                userProgress.quizPerfectRounds++;
+                saveUserProgress();
+                celebrate();
+            }
         }
 
         // Typing Challenge
         let typingTimer;
         let typingSeconds = 0;
-        let typingCorrect = 0;
-        let typingWrong = 0;
         let currentTypingVerb;
+        let currentTypingStreak = 0;
+        let typingStartTime;
 
         function generateTypingChallenge() {
             currentTypingVerb = verbs[Math.floor(Math.random() * verbs.length)];
@@ -1089,8 +1996,9 @@
             
             clearInterval(typingTimer);
             typingSeconds = 0;
+            typingStartTime = Date.now();
             typingTimer = setInterval(() => {
-                typingSeconds++;
+                typingSeconds = Math.floor((Date.now() - typingStartTime) / 1000);
                 document.getElementById('typing-timer').textContent = typingSeconds;
             }, 1000);
         }
@@ -1101,21 +2009,37 @@
                 const userAnswer = e.target.value.trim().toLowerCase();
                 const correctAnswer = e.target.dataset.answer.toLowerCase();
                 const resultDiv = document.getElementById('typing-result');
+                const timeTaken = typingSeconds;
                 
                 if (userAnswer === correctAnswer || correctAnswer.includes(userAnswer)) {
-                    typingCorrect++;
+                    userProgress.typingCorrect++;
+                    currentTypingStreak++;
+                    
+                    // Update streak if it's higher than current
+                    if (currentTypingStreak > userProgress.typingStreak) {
+                        userProgress.typingStreak = currentTypingStreak;
+                    }
+                    
+                    // Update best time if applicable
+                    if (!userProgress.typingBestTime || timeTaken < userProgress.typingBestTime) {
+                        userProgress.typingBestTime = timeTaken;
+                    }
+                    
+                    saveUserProgress();
+                    
                     resultDiv.innerHTML = '<div class="result-message correct">✓ Correct! Well done!</div>';
                     // Celebrate every 3 correct answers
-                    if (typingCorrect % 3 === 0) {
+                    if (userProgress.typingCorrect % 3 === 0) {
                         celebrate();
                     }
                 } else {
-                    typingWrong++;
+                    userProgress.typingWrong++;
+                    currentTypingStreak = 0;
                     resultDiv.innerHTML = `<div class="result-message incorrect">✗ Incorrect. The answer was: ${e.target.dataset.answer}</div>`;
                 }
                 
-                document.getElementById('typing-correct').textContent = typingCorrect;
-                document.getElementById('typing-wrong').textContent = typingWrong;
+                document.getElementById('typing-correct').textContent = userProgress.typingCorrect;
+                document.getElementById('typing-wrong').textContent = userProgress.typingWrong;
                 
                 setTimeout(() => {
                     generateTypingChallenge();
@@ -1211,6 +2135,9 @@
         }
 
         // Initialize
+        loadUserProgress();
+        loadChallengeData();
+        setVerbOfTheDay();
         populateTable();
         loadFlashcard();
         generateQuizQuestion();
