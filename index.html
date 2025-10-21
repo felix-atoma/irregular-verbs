@@ -13,9 +13,9 @@
         }
 
         :root {
-            --primary: #006b3f; /* Ghana green */
-            --secondary: #fcd116; /* Ghana yellow */
-            --accent: #ce1126; /* Ghana red */
+            --primary: #006b3f;
+            --secondary: #fcd116;
+            --accent: #ce1126;
             --success: #4caf50;
             --danger: #f44336;
             --light: #f8f9fa;
@@ -89,6 +89,114 @@
             margin-top: 10px;
             font-style: italic;
             color: var(--ghana-yellow);
+        }
+
+        /* Student Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            font-size: 24px;
+            color: var(--ghana-green);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--ghana-green);
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--ghana-green);
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--ghana-red);
+            box-shadow: 0 0 0 3px rgba(206, 17, 38, 0.2);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: var(--ghana-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: var(--ghana-red);
+            transform: translateY(-2px);
+        }
+
+        .student-info {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .student-info span {
+            font-weight: bold;
+            color: var(--ghana-yellow);
+        }
+
+        .logout-btn {
+            background: var(--ghana-red);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-weight: 600;
         }
 
         .tabs {
@@ -169,7 +277,326 @@
             60% {transform: translateY(-5px);}
         }
 
-        /* 30-Day Challenge Styles */
+        /* Progress Tracking Styles */
+        .progress-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .progress-card {
+            background: linear-gradient(135deg, var(--ghana-green), var(--ghana-yellow));
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .progress-card-title {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .progress-card-value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .progress-history {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .history-item {
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .history-date {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .history-activity {
+            font-weight: 600;
+            color: var(--ghana-green);
+        }
+
+        .history-score {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--ghana-red);
+        }
+
+        /* Student Tracking Styles */
+        .student-tracking {
+            margin-top: 20px;
+        }
+        
+        .student-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        
+        .student-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s;
+        }
+        
+        .student-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .student-item:last-child {
+            border-bottom: none;
+        }
+        
+        .student-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .student-name {
+            font-weight: bold;
+            color: var(--ghana-green);
+        }
+        
+        .student-number {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .student-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-bar-small {
+            width: 150px;
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-small {
+            height: 100%;
+            background-color: var(--success);
+            transition: width 0.3s;
+        }
+        
+        .progress-percent {
+            font-weight: bold;
+            min-width: 40px;
+            text-align: right;
+        }
+        
+        .student-details-btn {
+            background: var(--ghana-green);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: all 0.3s;
+        }
+        
+        .student-details-btn:hover {
+            background: var(--ghana-red);
+        }
+        
+        .student-details {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .student-details.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .student-details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .student-details-title {
+            font-size: 1.5em;
+            color: var(--ghana-green);
+        }
+        
+        .close-details {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .student-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .student-stat {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .student-stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--ghana-green);
+        }
+        
+        .student-stat-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .student-activity {
+            margin-top: 20px;
+        }
+        
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .activity-table th {
+            background: var(--ghana-green);
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .activity-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .activity-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .export-btn {
+            background: var(--ghana-green);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .export-btn:hover {
+            background: var(--ghana-red);
+        }
+        
+        .add-student-form {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--ghana-green);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        .add-student-btn {
+            background: var(--ghana-green);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .add-student-btn:hover {
+            background: var(--ghana-red);
+        }
+        
+        .search-students {
+            margin-bottom: 20px;
+        }
+        
+        .search-students input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+
+        /* All other existing styles remain the same */
         .challenge-container {
             text-align: center;
         }
@@ -406,7 +833,6 @@
             color: var(--ghana-green);
         }
 
-        /* Search and Filter */
         .search-box {
             margin-bottom: 20px;
             position: relative;
@@ -421,7 +847,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* Verb Table */
         .verb-table {
             overflow-x: auto;
             max-height: 500px;
@@ -474,7 +899,6 @@
             animation: pulse 0.5s;
         }
 
-        /* Quiz Styles */
         .quiz-container {
             text-align: center;
         }
@@ -583,7 +1007,6 @@
             transform: translateY(-2px);
         }
 
-        /* Memory Game */
         .game-board {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -652,7 +1075,6 @@
             text-align: center;
         }
 
-        /* Flashcards */
         .flashcard-container {
             text-align: center;
         }
@@ -754,7 +1176,6 @@
             color: #666;
         }
 
-        /* Typing Game */
         .typing-game {
             text-align: center;
         }
@@ -1058,7 +1479,6 @@
             font-size: 14px;
         }
 
-        /* Verb Categories */
         .verb-category {
             display: flex;
             gap: 10px;
@@ -1165,7 +1585,6 @@
             color: #999;
         }
 
-        /* Celebration Animation */
         .confetti {
             position: fixed;
             width: 10px;
@@ -1180,7 +1599,6 @@
             100% { top: 100vh; opacity: 0; }
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .game-board {
                 grid-template-columns: repeat(3, 1fr);
@@ -1247,7 +1665,6 @@
             }
         }
 
-        /* Fun Elements */
         .character {
             position: fixed;
             bottom: 20px;
@@ -1269,39 +1686,94 @@
         .character:hover {
             animation: pulse 0.5s infinite;
         }
-
-        .verb-image {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin: 10px auto;
-            display: block;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
     </style>
 </head>
 <body>
+    <!-- Student Login Modal -->
+    <div class="modal active" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-user-graduate"></i> Student Login
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="student-name">Student Name</label>
+                    <input type="text" id="student-name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="student-number">Student Number</label>
+                    <input type="text" id="student-number" placeholder="Enter your student number" required>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Start Learning
+                </button>
+            </form>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <h1>🎓 Complete Verbs Learning Platform</h1>
             <div class="school-name">École St Pierre Claver</div>
             <p class="subtitle">Master 200+ English irregular verbs with games, challenges, and interactive activities!</p>
             <p class="developer">Developed by Felix Atoma</p>
+            <div class="student-info" id="student-info" style="display: none;">
+                <span id="current-student-name"></span>
+                <button class="logout-btn" onclick="logoutStudent()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
         </header>
 
         <div class="tabs">
-            <button class="tab-btn active" data-tab="challenge"><i class="fas fa-calendar-alt"></i> 30-Day Challenge</button>
+            <button class="tab-btn active" data-tab="progress"><i class="fas fa-chart-line"></i> My Progress</button>
+            <button class="tab-btn" data-tab="challenge"><i class="fas fa-calendar-alt"></i> 30-Day Challenge</button>
             <button class="tab-btn" data-tab="browse"><i class="fas fa-book"></i> Browse Verbs</button>
             <button class="tab-btn" data-tab="flashcards"><i class="fas fa-id-card"></i> Flashcards</button>
             <button class="tab-btn" data-tab="quiz"><i class="fas fa-question-circle"></i> Quiz</button>
             <button class="tab-btn" data-tab="typing"><i class="fas fa-keyboard"></i> Typing Challenge</button>
             <button class="tab-btn" data-tab="memory"><i class="fas fa-brain"></i> Memory Game</button>
+            <button class="tab-btn" data-tab="tracking"><i class="fas fa-users"></i> Student Tracking</button>
         </div>
 
         <div class="content-area">
+            <!-- Student Progress Tab -->
+            <div class="tab-content active" id="progress">
+                <h2 style="color: var(--ghana-green); margin-bottom: 20px;">
+                    <i class="fas fa-chart-line"></i> Your Learning Progress
+                </h2>
+                
+                <div class="progress-dashboard">
+                    <div class="progress-card">
+                        <div class="progress-card-title">Total Activities</div>
+                        <div class="progress-card-value" id="total-activities">0</div>
+                    </div>
+                    <div class="progress-card">
+                        <div class="progress-card-title">Verbs Mastered</div>
+                        <div class="progress-card-value" id="progress-mastered">0</div>
+                    </div>
+                    <div class="progress-card">
+                        <div class="progress-card-title">Quiz Score</div>
+                        <div class="progress-card-value" id="progress-quiz-score">0%</div>
+                    </div>
+                    <div class="progress-card">
+                        <div class="progress-card-title">Current Streak</div>
+                        <div class="progress-card-value" id="progress-streak">0</div>
+                    </div>
+                </div>
+
+                <div class="progress-history">
+                    <h3 style="color: var(--ghana-green); margin-bottom: 15px;">
+                        <i class="fas fa-history"></i> Activity History
+                    </h3>
+                    <div id="activity-history">
+                        <p style="text-align: center; color: #666;">No activities yet. Start learning to see your progress!</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- 30-Day Challenge Tab -->
-            <div class="tab-content active" id="challenge">
+            <div class="tab-content" id="challenge">
                 <div class="challenge-container">
                     <div class="challenge-header">
                         <div class="challenge-title">
@@ -1333,14 +1805,11 @@
                             <div class="calendar-day">Fri</div>
                             <div class="calendar-day">Sat</div>
                         </div>
-                        <!-- Calendar days will be generated by JavaScript -->
                     </div>
 
                     <div class="daily-goals">
                         <h3><i class="fas fa-tasks"></i> Today's Learning Goals</h3>
-                        <div class="goals-list" id="daily-goals">
-                            <!-- Goals will be populated by JavaScript -->
-                        </div>
+                        <div class="goals-list" id="daily-goals"></div>
                     </div>
 
                     <div class="progress-section">
@@ -1562,9 +2031,7 @@
                         </div>
                     </div>
 
-                    <div class="progress-indicator" id="progress-indicator">
-                        <!-- Progress dots will be generated by JavaScript -->
-                    </div>
+                    <div class="progress-indicator" id="progress-indicator"></div>
 
                     <div class="typing-prompt">
                         <div class="question" id="typing-question">Ready to start the challenge? Click "Start Challenge"!</div>
@@ -1613,9 +2080,7 @@
                                 <div class="result-label">Accuracy</div>
                             </div>
                         </div>
-                        <div class="verbs-list" id="verbs-list">
-                            <!-- Verb results will be populated by JavaScript -->
-                        </div>
+                        <div class="verbs-list" id="verbs-list"></div>
                         <div class="typing-controls">
                             <button class="control-btn" onclick="restartChallenge()">
                                 <i class="fas fa-sync-alt"></i> Try Again
@@ -1639,10 +2104,44 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Student Tracking Tab -->
+            <div class="tab-content" id="tracking">
+                <div class="student-tracking">
+                    <h2><i class="fas fa-users"></i> Student Progress Tracking</h2>
+                    <p>Monitor student learning progress and improvement on a daily basis</p>
+                    
+                    <div class="add-student-form">
+                        <h3><i class="fas fa-user-plus"></i> Add New Student</h3>
+                        <div class="form-group">
+                            <label for="new-student-name">Student Name</label>
+                            <input type="text" id="new-student-name" placeholder="Enter student name">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-student-number">Student Number</label>
+                            <input type="text" id="new-student-number" placeholder="Enter student number">
+                        </div>
+                        <button class="add-student-btn" onclick="addStudent()"><i class="fas fa-plus"></i> Add Student</button>
+                    </div>
+                    
+                    <div class="search-students">
+                        <input type="text" id="search-students" placeholder="🔍 Search students by name or number...">
+                    </div>
+                    
+                    <div class="student-list" id="student-list">
+                        <!-- Student list will be populated by JavaScript -->
+                    </div>
+                    
+                    <div class="student-details" id="student-details">
+                        <!-- Student details will be populated by JavaScript -->
+                    </div>
+                    
+                    <button class="export-btn" onclick="exportStudentData()"><i class="fas fa-download"></i> Export Student Progress Data</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Fun Character -->
     <div class="character" onclick="celebrate()">
         <i class="fas fa-graduation-cap"></i>
     </div>
@@ -2064,36 +2563,471 @@
             typingWrong: 0
         };
 
-        // Typing Challenge State
-        const typingState = {
-            isActive: false,
-            currentVerbIndex: 0,
-            score: 0,
-            currentStreak: 0,
-            bestStreak: 0,
-            correctAnswers: 0,
-            incorrectAnswers: 0,
-            totalTime: 10, // seconds per verb
-            timeLeft: 10,
-            timer: null,
-            results: [],
-            challengeVerbs: []
-        };
+        // Student tracking data structure
+        let students = [];
+        let currentStudent = null;
 
-        // Quiz State
-        let currentQuizVerb;
-        let quizAnswered = false;
-        let currentQuizStreak = 0;
+        // Load students from localStorage
+        function loadStudents() {
+            const savedStudents = localStorage.getItem('verbLearningStudents');
+            if (savedStudents) {
+                students = JSON.parse(savedStudents);
+            }
+            renderStudentList();
+        }
 
-        // Flashcards State
-        let currentFlashcardIndex = 0;
-        let flashcardDeck = [...verbs];
+        // Save students to localStorage
+        function saveStudents() {
+            localStorage.setItem('verbLearningStudents', JSON.stringify(students));
+        }
 
-        // Memory Game State
-        let memoryCards = [];
-        let flippedCards = [];
-        let matchedPairs = 0;
-        let moves = 0;
+        // Add a new student
+        function addStudent() {
+            const nameInput = document.getElementById('new-student-name');
+            const numberInput = document.getElementById('new-student-number');
+            
+            const name = nameInput.value.trim();
+            const number = numberInput.value.trim();
+            
+            if (!name || !number) {
+                alert('Please enter both name and number');
+                return;
+            }
+            
+            // Check if student number already exists
+            if (students.some(student => student.number === number)) {
+                alert('A student with this number already exists');
+                return;
+            }
+            
+            const newStudent = {
+                id: Date.now().toString(),
+                name: name,
+                number: number,
+                joinedDate: new Date().toISOString(),
+                progress: {
+                    masteredVerbs: [],
+                    practiceSessions: 0,
+                    quizScore: 0,
+                    quizTotal: 0,
+                    typingScore: 0,
+                    typingTotal: 0,
+                    challengeDaysCompleted: 0,
+                    lastActivity: null
+                },
+                activityLog: []
+            };
+            
+            students.push(newStudent);
+            saveStudents();
+            renderStudentList();
+            
+            // Clear form
+            nameInput.value = '';
+            numberInput.value = '';
+            
+            // Show success message
+            alert(`Student ${name} added successfully!`);
+        }
+
+        // Render student list
+        function renderStudentList(filter = '') {
+            const studentList = document.getElementById('student-list');
+            studentList.innerHTML = '';
+            
+            let filteredStudents = students;
+            
+            if (filter) {
+                filteredStudents = students.filter(student => 
+                    student.name.toLowerCase().includes(filter.toLowerCase()) || 
+                    student.number.includes(filter)
+                );
+            }
+            
+            if (filteredStudents.length === 0) {
+                studentList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-user-graduate"></i>
+                        <h3>No students found</h3>
+                        <p>${filter ? 'Try a different search term' : 'Add your first student using the form above'}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredStudents.forEach(student => {
+                const progressPercent = calculateStudentProgress(student);
+                
+                const studentItem = document.createElement('div');
+                studentItem.className = 'student-item';
+                studentItem.innerHTML = `
+                    <div class="student-info">
+                        <div class="student-name">${student.name}</div>
+                        <div class="student-number">${student.number}</div>
+                    </div>
+                    <div class="student-progress">
+                        <div class="progress-bar-small">
+                            <div class="progress-small" style="width: ${progressPercent}%"></div>
+                        </div>
+                        <div class="progress-percent">${Math.round(progressPercent)}%</div>
+                        <button class="student-details-btn" onclick="showStudentDetails('${student.id}')">
+                            <i class="fas fa-chart-bar"></i> Details
+                        </button>
+                    </div>
+                `;
+                
+                studentList.appendChild(studentItem);
+            });
+        }
+
+        // Calculate student progress percentage
+        function calculateStudentProgress(student) {
+            const progress = student.progress;
+            
+            // Calculate based on multiple factors
+            const verbMastery = (progress.masteredVerbs.length / verbs.length) * 40; // 40% weight
+            const quizAccuracy = progress.quizTotal > 0 ? (progress.quizScore / progress.quizTotal) * 30 : 0; // 30% weight
+            const activityLevel = Math.min(progress.practiceSessions / 10, 1) * 20; // 20% weight (capped at 10 sessions)
+            const challengeProgress = (progress.challengeDaysCompleted / 30) * 10; // 10% weight
+            
+            return verbMastery + quizAccuracy + activityLevel + challengeProgress;
+        }
+
+        // Show student details
+        function showStudentDetails(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+            
+            const progressPercent = calculateStudentProgress(student);
+            const joinedDate = new Date(student.joinedDate).toLocaleDateString();
+            const lastActivity = student.progress.lastActivity ? 
+                new Date(student.progress.lastActivity).toLocaleDateString() : 'No activity yet';
+            
+            const studentDetails = document.getElementById('student-details');
+            studentDetails.innerHTML = `
+                <div class="student-details-header">
+                    <div class="student-details-title">${student.name} - ${student.number}</div>
+                    <button class="close-details" onclick="closeStudentDetails()"><i class="fas fa-times"></i></button>
+                </div>
+                
+                <div class="student-stats">
+                    <div class="student-stat">
+                        <div class="student-stat-value">${Math.round(progressPercent)}%</div>
+                        <div class="student-stat-label">Overall Progress</div>
+                    </div>
+                    <div class="student-stat">
+                        <div class="student-stat-value">${student.progress.masteredVerbs.length}</div>
+                        <div class="student-stat-label">Mastered Verbs</div>
+                    </div>
+                    <div class="student-stat">
+                        <div class="student-stat-value">${student.progress.practiceSessions}</div>
+                        <div class="student-stat-label">Practice Sessions</div>
+                    </div>
+                    <div class="student-stat">
+                        <div class="student-stat-value">${student.progress.quizTotal > 0 ? Math.round((student.progress.quizScore / student.progress.quizTotal) * 100) : 0}%</div>
+                        <div class="student-stat-label">Quiz Accuracy</div>
+                    </div>
+                </div>
+                
+                <div class="progress-section">
+                    <h3>Overall Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${progressPercent}%">${Math.round(progressPercent)}%</div>
+                    </div>
+                </div>
+                
+                <div class="student-activity">
+                    <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    <table class="activity-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Activity</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${student.activityLog.slice(-10).reverse().map(activity => `
+                                <tr>
+                                    <td>${new Date(activity.timestamp).toLocaleDateString()}</td>
+                                    <td>${activity.type}</td>
+                                    <td>${activity.details}</td>
+                                </tr>
+                            `).join('')}
+                            ${student.activityLog.length === 0 ? `
+                                <tr>
+                                    <td colspan="3" style="text-align: center;">No activity recorded yet</td>
+                                </tr>
+                            ` : ''}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="student-info-section">
+                    <h3><i class="fas fa-info-circle"></i> Student Information</h3>
+                    <p><strong>Joined:</strong> ${joinedDate}</p>
+                    <p><strong>Last Activity:</strong> ${lastActivity}</p>
+                    <p><strong>Mastered Verbs:</strong> ${student.progress.masteredVerbs.length} of ${verbs.length}</p>
+                </div>
+                
+                <button class="export-btn" onclick="exportIndividualStudentData('${student.id}')">
+                    <i class="fas fa-download"></i> Export ${student.name}'s Progress Report
+                </button>
+            `;
+            
+            studentDetails.classList.add('active');
+        }
+
+        // Close student details
+        function closeStudentDetails() {
+            document.getElementById('student-details').classList.remove('active');
+        }
+
+        // Export all student data
+        function exportStudentData() {
+            if (students.length === 0) {
+                alert('No student data to export');
+                return;
+            }
+            
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "Student Name,Student Number,Joined Date,Mastered Verbs,Practice Sessions,Quiz Accuracy,Overall Progress\n"
+                + students.map(student => {
+                    const progressPercent = calculateStudentProgress(student);
+                    const quizAccuracy = student.progress.quizTotal > 0 ? 
+                        (student.progress.quizScore / student.progress.quizTotal) * 100 : 0;
+                    
+                    return `"${student.name}","${student.number}","${new Date(student.joinedDate).toLocaleDateString()}",${student.progress.masteredVerbs.length},${student.progress.practiceSessions},${Math.round(quizAccuracy)}%,${Math.round(progressPercent)}%`;
+                }).join("\n");
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "student_progress_data.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Export individual student data
+        function exportIndividualStudentData(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+            
+            const progressPercent = calculateStudentProgress(student);
+            const quizAccuracy = student.progress.quizTotal > 0 ? 
+                (student.progress.quizScore / student.progress.quizTotal) * 100 : 0;
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += `Student Progress Report - ${student.name}\n`;
+            csvContent += `Generated on: ${new Date().toLocaleDateString()}\n\n`;
+            csvContent += "Metric,Value\n";
+            csvContent += `Student Name,${student.name}\n`;
+            csvContent += `Student Number,${student.number}\n`;
+            csvContent += `Joined Date,${new Date(student.joinedDate).toLocaleDateString()}\n`;
+            csvContent += `Mastered Verbs,${student.progress.masteredVerbs.length}\n`;
+            csvContent += `Total Verbs,${verbs.length}\n`;
+            csvContent += `Practice Sessions,${student.progress.practiceSessions}\n`;
+            csvContent += `Quiz Accuracy,${Math.round(quizAccuracy)}%\n`;
+            csvContent += `Overall Progress,${Math.round(progressPercent)}%\n\n`;
+            
+            // Add recent activity
+            csvContent += "Recent Activity\n";
+            csvContent += "Date,Activity,Details\n";
+            student.activityLog.slice(-10).reverse().forEach(activity => {
+                csvContent += `${new Date(activity.timestamp).toLocaleDateString()},${activity.type},${activity.details}\n`;
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `${student.name}_progress_report.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Student login
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('student-name').value.trim();
+            const number = document.getElementById('student-number').value.trim();
+            
+            if (!name || !number) {
+                alert('Please enter both name and number');
+                return;
+            }
+            
+            // Find existing student or create new one
+            let student = students.find(s => s.number === number);
+            
+            if (!student) {
+                // Create new student
+                student = {
+                    id: Date.now().toString(),
+                    name: name,
+                    number: number,
+                    joinedDate: new Date().toISOString(),
+                    progress: {
+                        masteredVerbs: [],
+                        practiceSessions: 0,
+                        quizScore: 0,
+                        quizTotal: 0,
+                        typingScore: 0,
+                        typingTotal: 0,
+                        challengeDaysCompleted: 0,
+                        lastActivity: null
+                    },
+                    activityLog: []
+                };
+                
+                students.push(student);
+                saveStudents();
+            } else {
+                // Update name if it's different
+                if (student.name !== name) {
+                    student.name = name;
+                    saveStudents();
+                }
+            }
+            
+            currentStudent = student;
+            
+            // Hide login modal
+            document.getElementById('login-modal').classList.remove('active');
+            
+            // Show student info
+            document.getElementById('student-info').style.display = 'inline-block';
+            document.getElementById('current-student-name').textContent = `Welcome, ${student.name}!`;
+            
+            // Update progress display
+            updateStudentProgressDisplay();
+        });
+
+        // Logout student
+        function logoutStudent() {
+            currentStudent = null;
+            document.getElementById('login-modal').classList.add('active');
+            document.getElementById('student-info').style.display = 'none';
+        }
+
+        // Update student progress display
+        function updateStudentProgressDisplay() {
+            if (!currentStudent) return;
+            
+            const progress = currentStudent.progress;
+            const totalActivities = progress.practiceSessions + progress.quizTotal + progress.typingTotal;
+            const quizAccuracy = progress.quizTotal > 0 ? Math.round((progress.quizScore / progress.quizTotal) * 100) : 0;
+            
+            document.getElementById('total-activities').textContent = totalActivities;
+            document.getElementById('progress-mastered').textContent = progress.masteredVerbs.length;
+            document.getElementById('progress-quiz-score').textContent = `${quizAccuracy}%`;
+            document.getElementById('progress-streak').textContent = progress.challengeDaysCompleted;
+            
+            // Update activity history
+            const activityHistory = document.getElementById('activity-history');
+            activityHistory.innerHTML = '';
+            
+            if (currentStudent.activityLog.length === 0) {
+                activityHistory.innerHTML = '<p style="text-align: center; color: #666;">No activities yet. Start learning to see your progress!</p>';
+                return;
+            }
+            
+            currentStudent.activityLog.slice(-10).reverse().forEach(activity => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <div>
+                        <div class="history-date">${new Date(activity.timestamp).toLocaleDateString()}</div>
+                        <div class="history-activity">${activity.type}</div>
+                    </div>
+                    <div class="history-score">${activity.details}</div>
+                `;
+                activityHistory.appendChild(historyItem);
+            });
+        }
+
+        // Update student progress when activities occur
+        function updateStudentProgress(activityType, details, verb = null) {
+            if (!currentStudent) return;
+            
+            const progress = currentStudent.progress;
+            
+            // Update progress based on activity type
+            switch(activityType) {
+                case 'quiz':
+                    progress.quizTotal++;
+                    if (details.includes('correct')) {
+                        progress.quizScore++;
+                    }
+                    break;
+                case 'typing':
+                    progress.typingTotal++;
+                    if (details.includes('correct')) {
+                        progress.typingScore++;
+                    }
+                    break;
+                case 'practice':
+                    progress.practiceSessions++;
+                    break;
+                case 'verb_mastered':
+                    if (verb && !progress.masteredVerbs.includes(verb)) {
+                        progress.masteredVerbs.push(verb);
+                    }
+                    break;
+                case 'challenge_completed':
+                    progress.challengeDaysCompleted++;
+                    break;
+            }
+            
+            // Update last activity
+            progress.lastActivity = new Date().toISOString();
+            
+            // Log the activity
+            currentStudent.activityLog.push({
+                timestamp: new Date().toISOString(),
+                type: activityType,
+                details: details
+            });
+            
+            // Keep only the last 50 activities
+            if (currentStudent.activityLog.length > 50) {
+                currentStudent.activityLog = currentStudent.activityLog.slice(-50);
+            }
+            
+            saveStudents();
+            updateStudentProgressDisplay();
+        }
+
+        // Initialize student tracking
+        function initializeStudentTracking() {
+            loadStudents();
+            
+            // Add event listener for student search
+            document.getElementById('search-students').addEventListener('input', (e) => {
+                renderStudentList(e.target.value);
+            });
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+                
+                // Track practice sessions
+                if (btn.dataset.tab !== 'challenge' && btn.dataset.tab !== 'browse' && btn.dataset.tab !== 'tracking' && btn.dataset.tab !== 'progress') {
+                    userProgress.practiceSessions++;
+                    saveUserProgress();
+                    
+                    // Track student progress
+                    updateStudentProgress('practice', `Used ${btn.dataset.tab} feature`);
+                }
+            });
+        });
 
         // Load user progress from localStorage
         function loadUserProgress() {
@@ -2250,6 +3184,9 @@
                 
                 saveChallengeData();
                 celebrate();
+                
+                // Track student progress
+                updateStudentProgress('challenge_completed', `Completed day ${challengeData.currentDay - 1}`);
             }
         }
 
@@ -2315,31 +3252,6 @@
             document.getElementById('verb-of-day-french').textContent = verb[3];
         }
 
-        // Tab switching
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById(btn.dataset.tab).classList.add('active');
-                
-                // Track practice sessions
-                if (btn.dataset.tab !== 'challenge' && btn.dataset.tab !== 'browse') {
-                    userProgress.practiceSessions++;
-                    saveUserProgress();
-                }
-            });
-        });
-
-        // Category filtering
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                populateTable(document.getElementById('searchInput').value, btn.dataset.category);
-            });
-        });
-
         // Populate verb table
         function populateTable(filter = '', category = 'all') {
             const tbody = document.getElementById('verbTableBody');
@@ -2393,6 +3305,15 @@
             populateTable(e.target.value, activeCategory);
         });
 
+        // Category filtering
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                populateTable(document.getElementById('searchInput').value, btn.dataset.category);
+            });
+        });
+
         // Text-to-speech function
         function speakText(textOrId, lang = 'en-US') {
             let text;
@@ -2438,6 +3359,9 @@
         }
 
         // Flashcards
+        let currentFlashcardIndex = 0;
+        let flashcardDeck = [...verbs];
+
         function loadFlashcard() {
             const verb = flashcardDeck[currentFlashcardIndex];
             document.getElementById('flashcard-infinitive').textContent = verb[0];
@@ -2491,6 +3415,9 @@
                 saveUserProgress();
                 loadFlashcard();
                 
+                // Track student progress
+                updateStudentProgress('verb_mastered', `Mastered verb: ${currentVerb}`, currentVerb);
+                
                 // Celebrate if user has mastered a certain number of verbs
                 if (userProgress.masteredVerbs.length % 5 === 0) {
                     celebrate();
@@ -2499,6 +3426,10 @@
         }
 
         // Quiz
+        let currentQuizVerb;
+        let quizAnswered = false;
+        let currentQuizStreak = 0;
+
         function generateQuizQuestion() {
             quizAnswered = false;
             currentQuizVerb = verbs[Math.floor(Math.random() * verbs.length)];
@@ -2547,6 +3478,9 @@
                 userProgress.quizScore++;
                 currentQuizStreak++;
                 
+                // Track student progress
+                updateStudentProgress('quiz', 'Correct answer in quiz');
+                
                 // Update streak if it's higher than current
                 if (currentQuizStreak > userProgress.quizStreak) {
                     userProgress.quizStreak = currentQuizStreak;
@@ -2560,6 +3494,10 @@
             } else {
                 btn.classList.add('incorrect');
                 currentQuizStreak = 0;
+                
+                // Track student progress
+                updateStudentProgress('quiz', 'Incorrect answer in quiz');
+                
                 allButtons.forEach(b => {
                     if (b.textContent === correct) {
                         b.classList.add('correct');
@@ -2584,6 +3522,21 @@
         }
 
         // Typing Challenge
+        const typingState = {
+            isActive: false,
+            currentVerbIndex: 0,
+            score: 0,
+            currentStreak: 0,
+            bestStreak: 0,
+            correctAnswers: 0,
+            incorrectAnswers: 0,
+            totalTime: 10, // seconds per verb
+            timeLeft: 10,
+            timer: null,
+            results: [],
+            challengeVerbs: []
+        };
+
         function initTypingChallenge() {
             // Get settings
             const verbCount = parseInt(document.getElementById('verb-count').value);
@@ -2808,6 +3761,9 @@
                 // Show correct message
                 showResultMessage('Correct! +' + typingState.timeLeft + ' points', 'correct');
                 
+                // Track student progress
+                updateStudentProgress('typing', 'Correct answer in typing challenge');
+                
                 // Celebrate every 5 correct answers
                 if (typingState.correctAnswers % 5 === 0) {
                     celebrate();
@@ -2815,6 +3771,9 @@
             } else {
                 typingState.incorrectAnswers++;
                 typingState.currentStreak = 0;
+                
+                // Track student progress
+                updateStudentProgress('typing', 'Incorrect answer in typing challenge');
                 
                 // Show incorrect message
                 showResultMessage(`Incorrect. The answer was: ${correctAnswer}`, 'incorrect');
@@ -2990,6 +3949,11 @@
         }
 
         // Memory Game
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+
         function initMemoryGame() {
             matchedPairs = 0;
             moves = 0;
@@ -3054,6 +4018,9 @@
                         document.getElementById('matches').textContent = matchedPairs;
                         flippedCards = [];
                         
+                        // Track student progress
+                        updateStudentProgress('memory', 'Found a match in memory game');
+                        
                         if (matchedPairs === 8) {
                             setTimeout(() => {
                                 celebrate();
@@ -3081,6 +4048,7 @@
             generateQuizQuestion();
             initTypingChallenge();
             initMemoryGame();
+            initializeStudentTracking();
         }
 
         // Initialize the app when page loads
