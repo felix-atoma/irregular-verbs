@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>30-Day Verbs Challenge - École St Pierre Claver</title>
+    <title>Complete Verbs Learning Platform - École St Pierre Claver</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -759,12 +759,46 @@
             text-align: center;
         }
 
+        .typing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .typing-title {
+            font-size: 28px;
+            color: var(--ghana-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .typing-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
         .typing-prompt {
             background: var(--light);
             padding: 30px;
             border-radius: 15px;
             margin: 20px 0;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .typing-prompt::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--ghana-red), var(--ghana-yellow), var(--ghana-green));
         }
 
         .typing-input {
@@ -775,13 +809,49 @@
             border: 2px solid var(--ghana-green);
             border-radius: 10px;
             margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .typing-input:focus {
+            border-color: var(--ghana-red);
+            box-shadow: 0 0 0 3px rgba(206, 17, 38, 0.2);
+            outline: none;
+        }
+
+        .timer-container {
+            margin: 20px 0;
         }
 
         .timer {
             font-size: 24px;
             font-weight: 600;
             color: var(--ghana-green);
-            margin: 20px 0;
+            margin-bottom: 10px;
+        }
+
+        .time-bar {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0 auto;
+            max-width: 500px;
+        }
+
+        .time-progress {
+            height: 100%;
+            background: var(--ghana-green);
+            transition: width 1s linear;
+            width: 100%;
+        }
+
+        .time-progress.warning {
+            background: var(--ghana-yellow);
+        }
+
+        .time-progress.danger {
+            background: var(--ghana-red);
         }
 
         .result-message {
@@ -790,6 +860,7 @@
             margin-top: 20px;
             padding: 15px;
             border-radius: 10px;
+            transition: all 0.3s;
         }
 
         .result-message.correct {
@@ -804,35 +875,187 @@
             animation: shake 0.5s;
         }
 
-        /* Progress Bar */
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: #eee;
-            border-radius: 5px;
+        .typing-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .results-container {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 15px;
             margin: 20px 0;
-            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none;
         }
 
-        .progress {
-            height: 100%;
+        .results-container.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .results-title {
+            font-size: 24px;
+            color: var(--ghana-green);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .result-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .result-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .result-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .result-value.correct {
+            color: var(--success);
+        }
+
+        .result-value.incorrect {
+            color: var(--danger);
+        }
+
+        .result-value.score {
+            color: var(--ghana-green);
+        }
+
+        .verbs-list {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .verb-result {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .verb-result:last-child {
+            border-bottom: none;
+        }
+
+        .verb-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .verb-answer {
+            flex: 1;
+            text-align: center;
+        }
+
+        .verb-status {
+            flex: 0 0 100px;
+            text-align: right;
+        }
+
+        .status-correct {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .status-incorrect {
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: all 0.3s;
+        }
+
+        .progress-dot.active {
+            background: var(--ghana-green);
+        }
+
+        .progress-dot.correct {
             background: var(--success);
-            transition: width 0.3s;
         }
 
-        /* Celebration Animation */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: var(--ghana-yellow);
-            top: 0;
-            opacity: 0;
+        .progress-dot.incorrect {
+            background: var(--danger);
         }
 
-        @keyframes confetti-fall {
-            0% { top: -10px; opacity: 1; }
-            100% { top: 100vh; opacity: 0; }
+        .challenge-settings {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .settings-title {
+            font-size: 20px;
+            color: var(--ghana-green);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-options {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .setting-option {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .setting-label {
+            font-weight: 600;
+            color: var(--ghana-green);
+        }
+
+        .setting-select {
+            padding: 8px 12px;
+            border: 2px solid var(--ghana-green);
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
         }
 
         /* Verb Categories */
@@ -871,26 +1094,6 @@
             margin: 20px 0;
             flex-wrap: wrap;
             gap: 10px;
-        }
-
-        .stat-box {
-            background: var(--light);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            min-width: 120px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--ghana-green);
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: #666;
         }
 
         .verb-of-day {
@@ -962,6 +1165,21 @@
             color: #999;
         }
 
+        /* Celebration Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--ghana-yellow);
+            top: 0;
+            opacity: 0;
+        }
+
+        @keyframes confetti-fall {
+            0% { top: -10px; opacity: 1; }
+            100% { top: 100vh; opacity: 0; }
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .game-board {
@@ -984,12 +1202,26 @@
                 grid-template-columns: repeat(4, 1fr);
             }
             
-            .challenge-header {
+            .challenge-header, .typing-header {
                 flex-direction: column;
             }
             
-            .challenge-stats {
+            .challenge-stats, .typing-stats {
                 justify-content: center;
+            }
+            
+            .results-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .verb-result {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .verb-answer, .verb-status {
+                text-align: left;
             }
         }
 
@@ -1008,6 +1240,10 @@
             
             .calendar {
                 grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .results-stats {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -1048,9 +1284,9 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎓 30-Day Verbs Challenge</h1>
+            <h1>🎓 Complete Verbs Learning Platform</h1>
             <div class="school-name">École St Pierre Claver</div>
-            <p class="subtitle">Master English irregular verbs in just 30 days with our structured learning plan!</p>
+            <p class="subtitle">Master 200+ English irregular verbs with games, challenges, and interactive activities!</p>
             <p class="developer">Developed by Felix Atoma</p>
         </header>
 
@@ -1269,20 +1505,122 @@
             <!-- Typing Challenge Tab -->
             <div class="tab-content" id="typing">
                 <div class="typing-game">
-                    <h2><i class="fas fa-keyboard"></i> Typing Challenge</h2>
-                    <p>Type the correct form as quickly as possible!</p>
-                    <div class="achievements">
-                        <div class="achievement" id="typing-streak"><i class="fas fa-bolt"></i> Current Streak: 0</div>
-                        <div class="achievement" id="typing-best"><i class="fas fa-crown"></i> Best Time: --</div>
+                    <div class="typing-header">
+                        <div class="typing-title">
+                            <i class="fas fa-keyboard"></i> Complete Verbs Typing Challenge
+                        </div>
+                        <div class="typing-stats">
+                            <div class="stat-box">
+                                <div class="stat-value" id="typing-score">0</div>
+                                <div class="stat-label">Score</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" id="typing-streak">0</div>
+                                <div class="stat-label">Current Streak</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" id="typing-best">0</div>
+                                <div class="stat-label">Best Streak</div>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="challenge-settings">
+                        <div class="settings-title">
+                            <i class="fas fa-cog"></i> Challenge Settings
+                        </div>
+                        <div class="settings-options">
+                            <div class="setting-option">
+                                <label class="setting-label" for="verb-count">Verbs per Challenge</label>
+                                <select class="setting-select" id="verb-count">
+                                    <option value="10">10 Verbs</option>
+                                    <option value="20">20 Verbs</option>
+                                    <option value="30">30 Verbs</option>
+                                    <option value="50">50 Verbs</option>
+                                    <option value="100">100 Verbs</option>
+                                    <option value="200">All Verbs (200+)</option>
+                                </select>
+                            </div>
+                            <div class="setting-option">
+                                <label class="setting-label" for="time-limit">Time per Verb</label>
+                                <select class="setting-select" id="time-limit">
+                                    <option value="5">5 Seconds</option>
+                                    <option value="10" selected>10 Seconds</option>
+                                    <option value="15">15 Seconds</option>
+                                    <option value="20">20 Seconds</option>
+                                </select>
+                            </div>
+                            <div class="setting-option">
+                                <label class="setting-label" for="question-type">Question Type</label>
+                                <select class="setting-select" id="question-type">
+                                    <option value="mixed" selected>Mixed Questions</option>
+                                    <option value="preterite">Preterite Only</option>
+                                    <option value="past">Past Participle Only</option>
+                                    <option value="french">French Translation Only</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="progress-indicator" id="progress-indicator">
+                        <!-- Progress dots will be generated by JavaScript -->
+                    </div>
+
                     <div class="typing-prompt">
-                        <div class="question" id="typing-question">Loading...</div>
-                        <input type="text" class="typing-input" id="typing-input" placeholder="Type your answer here...">
+                        <div class="question" id="typing-question">Ready to start the challenge? Click "Start Challenge"!</div>
+                        <input type="text" class="typing-input" id="typing-input" placeholder="Type your answer here..." autocomplete="off" disabled>
+                        <div class="timer-container">
+                            <div class="timer">Time: <span id="typing-timer">10</span>s</div>
+                            <div class="time-bar">
+                                <div class="time-progress" id="time-progress"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="timer">Time: <span id="typing-timer">0</span>s</div>
+
                     <div id="typing-result"></div>
-                    <div class="stats">
-                        Correct: <span id="typing-correct">0</span> | Wrong: <span id="typing-wrong">0</span>
+
+                    <div class="typing-controls">
+                        <button class="control-btn" id="start-btn" onclick="startTypingChallenge()">
+                            <i class="fas fa-play"></i> Start Challenge
+                        </button>
+                        <button class="control-btn" id="skip-btn" onclick="skipVerb()" disabled>
+                            <i class="fas fa-forward"></i> Skip Verb
+                        </button>
+                        <button class="control-btn" id="reset-btn" onclick="resetTypingChallenge()">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+
+                    <div class="results-container" id="results-container">
+                        <div class="results-title">
+                            <i class="fas fa-chart-bar"></i> Challenge Results
+                        </div>
+                        <div class="results-stats">
+                            <div class="result-item">
+                                <div class="result-value score" id="final-score">0</div>
+                                <div class="result-label">Final Score</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-value correct" id="correct-count">0</div>
+                                <div class="result-label">Correct Answers</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-value incorrect" id="incorrect-count">0</div>
+                                <div class="result-label">Incorrect Answers</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-value" id="accuracy">0%</div>
+                                <div class="result-label">Accuracy</div>
+                            </div>
+                        </div>
+                        <div class="verbs-list" id="verbs-list">
+                            <!-- Verb results will be populated by JavaScript -->
+                        </div>
+                        <div class="typing-controls">
+                            <button class="control-btn" onclick="restartChallenge()">
+                                <i class="fas fa-sync-alt"></i> Try Again
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1310,7 +1648,7 @@
     </div>
 
     <script>
-        // Complete list of irregular verbs with French translations
+        // Complete list of 200+ irregular verbs with French translations
         const verbs = [
             ["abide", "abode", "abode", "supporter, demeurer"],
             ["arise", "arose", "arisen", "surgir, se lever"],
@@ -1410,6 +1748,254 @@
             ["wake", "woke/waked", "woken/waked", "(se) réveiller"],
             ["wear", "wore", "worn", "porter (vêtements)"],
             ["win", "won", "won", "gagner (un jeu)"],
+            ["write", "wrote", "written", "écrire"],
+            // Additional verbs to reach 200+
+            ["arise", "arose", "arisen", "surgir"],
+            ["awake", "awoke", "awoken", "se réveiller"],
+            ["backslide", "backslid", "backslid", "rechuter"],
+            ["be", "was/were", "been", "être"],
+            ["bear", "bore", "borne", "supporter"],
+            ["beat", "beat", "beaten", "battre"],
+            ["become", "became", "become", "devenir"],
+            ["befall", "befell", "befallen", "arriver à"],
+            ["beget", "begot", "begotten", "engendrer"],
+            ["begin", "began", "begun", "commencer"],
+            ["behold", "beheld", "beheld", "contempler"],
+            ["bend", "bent", "bent", "plier"],
+            ["bet", "bet", "bet", "parier"],
+            ["bid", "bid", "bid", "offrir"],
+            ["bind", "bound", "bound", "lier"],
+            ["bite", "bit", "bitten", "mordre"],
+            ["bleed", "bled", "bled", "saigner"],
+            ["blow", "blew", "blown", "souffler"],
+            ["break", "broke", "broken", "casser"],
+            ["breed", "bred", "bred", "élever"],
+            ["bring", "brought", "brought", "apporter"],
+            ["broadcast", "broadcast", "broadcast", "diffuser"],
+            ["build", "built", "built", "construire"],
+            ["burn", "burned/burnt", "burned/burnt", "brûler"],
+            ["burst", "burst", "burst", "éclater"],
+            ["bust", "bust", "bust", "faire faillite"],
+            ["buy", "bought", "bought", "acheter"],
+            ["cast", "cast", "cast", "jeter"],
+            ["catch", "caught", "caught", "attraper"],
+            ["choose", "chose", "chosen", "choisir"],
+            ["cling", "clung", "clung", "s'accrocher"],
+            ["clothe", "clad", "clad", "vêtir"],
+            ["come", "came", "come", "venir"],
+            ["cost", "cost", "cost", "coûter"],
+            ["creep", "crept", "crept", "ramper"],
+            ["cut", "cut", "cut", "couper"],
+            ["deal", "dealt", "dealt", "distribuer"],
+            ["dig", "dug", "dug", "creuser"],
+            ["dive", "dove/dived", "dived", "plonger"],
+            ["do", "did", "done", "faire"],
+            ["draw", "drew", "drawn", "dessiner"],
+            ["dream", "dreamed/dreamt", "dreamed/dreamt", "rêver"],
+            ["drink", "drank", "drunk", "boire"],
+            ["drive", "drove", "driven", "conduire"],
+            ["dwell", "dwelt", "dwelt", "habiter"],
+            ["eat", "ate", "eaten", "manger"],
+            ["fall", "fell", "fallen", "tomber"],
+            ["feed", "fed", "fed", "nourrir"],
+            ["feel", "felt", "felt", "sentir"],
+            ["fight", "fought", "fought", "se battre"],
+            ["find", "found", "found", "trouver"],
+            ["fit", "fit", "fit", "aller à"],
+            ["flee", "fled", "fled", "fuir"],
+            ["fling", "flung", "flung", "lancer"],
+            ["fly", "flew", "flown", "voler"],
+            ["forbid", "forbade", "forbidden", "interdire"],
+            ["forecast", "forecast", "forecast", "prévoir"],
+            ["foresee", "foresaw", "foreseen", "prévoir"],
+            ["foretell", "foretold", "foretold", "prédire"],
+            ["forget", "forgot", "forgotten", "oublier"],
+            ["forgive", "forgave", "forgiven", "pardonner"],
+            ["forsake", "forsook", "forsaken", "abandonner"],
+            ["freeze", "froze", "frozen", "geler"],
+            ["frostbite", "frostbit", "frostbitten", "gelure"],
+            ["get", "got", "got/gotten", "obtenir"],
+            ["give", "gave", "given", "donner"],
+            ["go", "went", "gone", "aller"],
+            ["grind", "ground", "ground", "moudre"],
+            ["grow", "grew", "grown", "grandir"],
+            ["handwrite", "handwrote", "handwritten", "écrire à la main"],
+            ["hang", "hung", "hung", "pendre"],
+            ["have", "had", "had", "avoir"],
+            ["hear", "heard", "heard", "entendre"],
+            ["hide", "hid", "hidden", "cacher"],
+            ["hit", "hit", "hit", "frapper"],
+            ["hold", "held", "held", "tenir"],
+            ["hurt", "hurt", "hurt", "blesser"],
+            ["inlay", "inlaid", "inlaid", "incruster"],
+            ["input", "input", "input", "entrer"],
+            ["interlay", "interlaid", "interlaid", "intercaler"],
+            ["keep", "kept", "kept", "garder"],
+            ["kneel", "knelt", "knelt", "s'agenouiller"],
+            ["knit", "knit", "knit", "tricoter"],
+            ["know", "knew", "known", "savoir"],
+            ["lay", "laid", "laid", "poser"],
+            ["lead", "led", "led", "mener"],
+            ["lean", "leaned/leant", "leaned/leant", "se pencher"],
+            ["leap", "leaped/leapt", "leaped/leapt", "sauter"],
+            ["learn", "learned/learnt", "learned/learnt", "apprendre"],
+            ["leave", "left", "left", "partir"],
+            ["lend", "lent", "lent", "prêter"],
+            ["let", "let", "let", "laisser"],
+            ["lie", "lay", "lain", "être étendu"],
+            ["light", "lit", "lit", "allumer"],
+            ["lose", "lost", "lost", "perdre"],
+            ["make", "made", "made", "faire"],
+            ["mean", "meant", "meant", "signifier"],
+            ["meet", "met", "met", "rencontrer"],
+            ["miscast", "miscast", "miscast", "mal distribuer"],
+            ["misdeal", "misdealt", "misdealt", "mal distribuer"],
+            ["misdo", "misdid", "misdone", "mal faire"],
+            ["mishear", "misheard", "misheard", "mal entendre"],
+            ["mislay", "mislaid", "mislaid", "égarer"],
+            ["mislead", "misled", "misled", "induire en erreur"],
+            ["misread", "misread", "misread", "mal lire"],
+            ["misspell", "misspelled/misspelt", "misspelled/misspelt", "mal orthographier"],
+            ["misspend", "misspent", "misspent", "mal dépenser"],
+            ["mistake", "mistook", "mistaken", "se tromper"],
+            ["misteach", "mistaught", "mistaught", "mal enseigner"],
+            ["misunderstand", "misunderstood", "misunderstood", "mal comprendre"],
+            ["miswrite", "miswrote", "miswritten", "mal écrire"],
+            ["mow", "mowed", "mowed/mown", "tondre"],
+            ["offset", "offset", "offset", "compenser"],
+            ["outbid", "outbid", "outbid", "surenchérir"],
+            ["outdo", "outdid", "outdone", "surpasser"],
+            ["outdraw", "outdrew", "outdrawn", "tirer plus vite"],
+            ["outgrow", "outgrew", "outgrown", "devenir trop grand"],
+            ["outrun", "outran", "outrun", "distancer"],
+            ["outsell", "outsold", "outsold", "vendre plus"],
+            ["outshine", "outshone", "outshone", "éclipser"],
+            ["overcome", "overcame", "overcome", "surmonter"],
+            ["overdo", "overdid", "overdone", "exagérer"],
+            ["overdraw", "overdrew", "overdrawn", "tirer à découvert"],
+            ["overeat", "overate", "overeaten", "manger trop"],
+            ["overhear", "overheard", "overheard", "entendre par hasard"],
+            ["override", "overrode", "overridden", "annuler"],
+            ["overrun", "overran", "overrun", "envahir"],
+            ["oversee", "oversaw", "overseen", "superviser"],
+            ["oversell", "oversold", "oversold", "trop vendre"],
+            ["overshoot", "overshot", "overshot", "dépasser"],
+            ["oversleep", "overslept", "overslept", "trop dormir"],
+            ["overtake", "overtook", "overtaken", "dépasser"],
+            ["overthrow", "overthrew", "overthrown", "renverser"],
+            ["pay", "paid", "paid", "payer"],
+            ["proofread", "proofread", "proofread", "relire"],
+            ["prove", "proved", "proved/proven", "prouver"],
+            ["put", "put", "put", "mettre"],
+            ["quit", "quit", "quit", "quitter"],
+            ["read", "read", "read", "lire"],
+            ["rebuild", "rebuilt", "rebuilt", "reconstruire"],
+            ["recast", "recast", "recast", "refondre"],
+            ["redo", "redid", "redone", "refaire"],
+            ["rehear", "reheard", "reheard", "réentendre"],
+            ["remake", "remade", "remade", "refaire"],
+            ["rend", "rent", "rent", "déchirer"],
+            ["repay", "repaid", "repaid", "rembourser"],
+            ["rerun", "reran", "rerun", "rediffuser"],
+            ["resell", "resold", "resold", "revendre"],
+            ["reset", "reset", "reset", "réinitialiser"],
+            ["resit", "resat", "resat", "repasser"],
+            ["retake", "retook", "retaken", "reprendre"],
+            ["retell", "retold", "retold", "raconter à nouveau"],
+            ["rethink", "rethought", "rethought", "reconsidérer"],
+            ["rewind", "rewound", "rewound", "rembobiner"],
+            ["rewrite", "rewrote", "rewritten", "réécrire"],
+            ["rid", "rid", "rid", "débarrasser"],
+            ["ride", "rode", "ridden", "monter"],
+            ["ring", "rang", "rung", "sonner"],
+            ["rise", "rose", "risen", "se lever"],
+            ["run", "ran", "run", "courir"],
+            ["saw", "sawed", "sawed/sawn", "scier"],
+            ["say", "said", "said", "dire"],
+            ["see", "saw", "seen", "voir"],
+            ["seek", "sought", "sought", "chercher"],
+            ["sell", "sold", "sold", "vendre"],
+            ["send", "sent", "sent", "envoyer"],
+            ["set", "set", "set", "poser"],
+            ["sew", "sewed", "sewed/sewn", "coudre"],
+            ["shake", "shook", "shaken", "secouer"],
+            ["shave", "shaved", "shaved/shaven", "raser"],
+            ["shear", "sheared", "sheared/shorn", "tondre"],
+            ["shed", "shed", "shed", "verser"],
+            ["shine", "shone", "shone", "briller"],
+            ["shit", "shit/shat", "shit/shat", "chier"],
+            ["shoot", "shot", "shot", "tirer"],
+            ["show", "showed", "shown/showed", "montrer"],
+            ["shrink", "shrank", "shrunk", "rétrécir"],
+            ["shut", "shut", "shut", "fermer"],
+            ["sing", "sang", "sung", "chanter"],
+            ["sink", "sank", "sunk", "couler"],
+            ["sit", "sat", "sat", "s'asseoir"],
+            ["slay", "slew", "slain", "tuer"],
+            ["sleep", "slept", "slept", "dormir"],
+            ["slide", "slid", "slid", "glisser"],
+            ["sling", "slung", "slung", "lancer"],
+            ["slink", "slunk", "slunk", "se faufiler"],
+            ["slit", "slit", "slit", "fendre"],
+            ["smell", "smelled/smelt", "smelled/smelt", "sentir"],
+            ["smite", "smote", "smitten", "frapper"],
+            ["sneak", "sneaked/snuck", "sneaked/snuck", "se faufiler"],
+            ["sow", "sowed", "sowed/sown", "semer"],
+            ["speak", "spoke", "spoken", "parler"],
+            ["speed", "sped", "sped", "accélérer"],
+            ["spell", "spelled/spelt", "spelled/spelt", "épeler"],
+            ["spend", "spent", "spent", "dépenser"],
+            ["spill", "spilled/spilt", "spilled/spilt", "renverser"],
+            ["spin", "spun", "spun", "tourner"],
+            ["spit", "spat", "spat", "cracher"],
+            ["split", "split", "split", "diviser"],
+            ["spoil", "spoiled/spoilt", "spoiled/spoilt", "gâter"],
+            ["spread", "spread", "spread", "étaler"],
+            ["spring", "sprang", "sprung", "jaillir"],
+            ["stand", "stood", "stood", "être debout"],
+            ["steal", "stole", "stolen", "voler"],
+            ["stick", "stuck", "stuck", "coller"],
+            ["sting", "stung", "stung", "piquer"],
+            ["stink", "stank", "stunk", "puer"],
+            ["strew", "strewed", "strewn", "éparpiller"],
+            ["stride", "strode", "stridden", "marcher à grands pas"],
+            ["strike", "struck", "struck", "frapper"],
+            ["string", "strung", "strung", "enfiler"],
+            ["strive", "strove", "striven", "s'efforcer"],
+            ["sublet", "sublet", "sublet", "sous-louer"],
+            ["swear", "swore", "sworn", "jurer"],
+            ["sweat", "sweat/sweated", "sweat/sweated", "suer"],
+            ["sweep", "swept", "swept", "balayer"],
+            ["swell", "swelled", "swelled/swollen", "gonfler"],
+            ["swim", "swam", "swum", "nager"],
+            ["swing", "swung", "swung", "balancer"],
+            ["take", "took", "taken", "prendre"],
+            ["teach", "taught", "taught", "enseigner"],
+            ["tear", "tore", "torn", "déchirer"],
+            ["tell", "told", "told", "dire"],
+            ["think", "thought", "thought", "penser"],
+            ["thrive", "thrived/throve", "thrived", "prospérer"],
+            ["throw", "threw", "thrown", "lancer"],
+            ["thrust", "thrust", "thrust", "enfoncer"],
+            ["tread", "trod", "trodden", "piétiner"],
+            ["typeset", "typeset", "typeset", "composer"],
+            ["undergo", "underwent", "undergone", "subir"],
+            ["understand", "understood", "understood", "comprendre"],
+            ["undertake", "undertook", "undertaken", "entreprendre"],
+            ["undo", "undid", "undone", "défaire"],
+            ["upset", "upset", "upset", "bouleverser"],
+            ["wake", "woke", "woken", "se réveiller"],
+            ["wear", "wore", "worn", "porter"],
+            ["weave", "wove", "woven", "tisser"],
+            ["wed", "wed", "wed", "se marier"],
+            ["weep", "wept", "wept", "pleurer"],
+            ["wet", "wet/wetted", "wet/wetted", "mouiller"],
+            ["win", "won", "won", "gagner"],
+            ["wind", "wound", "wound", "enrouler"],
+            ["withdraw", "withdrew", "withdrawn", "retirer"],
+            ["withhold", "withheld", "withheld", "retenir"],
+            ["withstand", "withstood", "withstood", "résister"],
+            ["wring", "wrung", "wrung", "tordre"],
             ["write", "wrote", "written", "écrire"]
         ];
 
@@ -1477,6 +2063,37 @@
             typingCorrect: 0,
             typingWrong: 0
         };
+
+        // Typing Challenge State
+        const typingState = {
+            isActive: false,
+            currentVerbIndex: 0,
+            score: 0,
+            currentStreak: 0,
+            bestStreak: 0,
+            correctAnswers: 0,
+            incorrectAnswers: 0,
+            totalTime: 10, // seconds per verb
+            timeLeft: 10,
+            timer: null,
+            results: [],
+            challengeVerbs: []
+        };
+
+        // Quiz State
+        let currentQuizVerb;
+        let quizAnswered = false;
+        let currentQuizStreak = 0;
+
+        // Flashcards State
+        let currentFlashcardIndex = 0;
+        let flashcardDeck = [...verbs];
+
+        // Memory Game State
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
 
         // Load user progress from localStorage
         function loadUserProgress() {
@@ -1821,9 +2438,6 @@
         }
 
         // Flashcards
-        let currentFlashcardIndex = 0;
-        let flashcardDeck = [...verbs];
-
         function loadFlashcard() {
             const verb = flashcardDeck[currentFlashcardIndex];
             document.getElementById('flashcard-infinitive').textContent = verb[0];
@@ -1885,10 +2499,6 @@
         }
 
         // Quiz
-        let currentQuizVerb;
-        let quizAnswered = false;
-        let currentQuizStreak = 0;
-
         function generateQuizQuestion() {
             quizAnswered = false;
             currentQuizVerb = verbs[Math.floor(Math.random() * verbs.length)];
@@ -1974,85 +2584,412 @@
         }
 
         // Typing Challenge
-        let typingTimer;
-        let typingSeconds = 0;
-        let currentTypingVerb;
-        let currentTypingStreak = 0;
-        let typingStartTime;
-
-        function generateTypingChallenge() {
-            currentTypingVerb = verbs[Math.floor(Math.random() * verbs.length)];
-            const types = [
-                { q: `Type the preterite of "${currentTypingVerb[0]}"`, a: currentTypingVerb[1] },
-                { q: `Type the past participle of "${currentTypingVerb[0]}"`, a: currentTypingVerb[2] },
-                { q: `Type the French translation of "${currentTypingVerb[0]}"`, a: currentTypingVerb[3] }
-            ];
-            const challenge = types[Math.floor(Math.random() * types.length)];
+        function initTypingChallenge() {
+            // Get settings
+            const verbCount = parseInt(document.getElementById('verb-count').value);
+            typingState.totalTime = parseInt(document.getElementById('time-limit').value);
             
-            document.getElementById('typing-question').textContent = challenge.q;
+            // Reset state
+            typingState.isActive = false;
+            typingState.currentVerbIndex = 0;
+            typingState.score = 0;
+            typingState.currentStreak = 0;
+            typingState.correctAnswers = 0;
+            typingState.incorrectAnswers = 0;
+            typingState.timeLeft = typingState.totalTime;
+            typingState.results = [];
+            
+            // Select random verbs for the challenge
+            const verbCountToUse = verbCount === 200 ? verbs.length : Math.min(verbCount, verbs.length);
+            typingState.challengeVerbs = [...verbs]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, verbCountToUse);
+            
+            // Update UI
+            updateTypingUI();
+            createProgressDots();
+            
+            // Hide results, show challenge
+            document.getElementById('results-container').classList.remove('active');
+            document.getElementById('typing-result').innerHTML = '';
+            document.getElementById('typing-input').disabled = true;
+            document.getElementById('typing-question').textContent = 'Ready to start the challenge? Click "Start Challenge"!';
+            
+            // Enable/disable buttons
+            document.getElementById('start-btn').disabled = false;
+            document.getElementById('skip-btn').disabled = true;
+        }
+
+        function startTypingChallenge() {
+            if (typingState.challengeVerbs.length === 0) {
+                initTypingChallenge();
+            }
+            
+            typingState.isActive = true;
+            document.getElementById('start-btn').disabled = true;
+            document.getElementById('skip-btn').disabled = false;
+            document.getElementById('typing-input').disabled = false;
+            
+            // Focus on input
+            document.getElementById('typing-input').focus();
+            
+            // Load first verb
+            loadNextVerb();
+        }
+
+        function loadNextVerb() {
+            if (typingState.currentVerbIndex >= typingState.challengeVerbs.length) {
+                endTypingChallenge();
+                return;
+            }
+            
+            // Reset timer
+            typingState.timeLeft = typingState.totalTime;
+            updateTimerDisplay();
+            
+            // Get current verb
+            const verb = typingState.challengeVerbs[typingState.currentVerbIndex];
+            
+            // Get question type based on settings
+            const questionTypeSetting = document.getElementById('question-type').value;
+            let questionTypes;
+            
+            if (questionTypeSetting === 'mixed') {
+                questionTypes = [
+                    { 
+                        type: 'preterite', 
+                        text: `Type the preterite of "${verb[0]}"`,
+                        answer: verb[1]
+                    },
+                    { 
+                        type: 'past', 
+                        text: `Type the past participle of "${verb[0]}"`,
+                        answer: verb[2]
+                    },
+                    { 
+                        type: 'french', 
+                        text: `Type the French translation of "${verb[0]}"`,
+                        answer: verb[3]
+                    }
+                ];
+            } else {
+                // Specific question type
+                const typeMap = {
+                    'preterite': { 
+                        type: 'preterite', 
+                        text: `Type the preterite of "${verb[0]}"`,
+                        answer: verb[1]
+                    },
+                    'past': { 
+                        type: 'past', 
+                        text: `Type the past participle of "${verb[0]}"`,
+                        answer: verb[2]
+                    },
+                    'french': { 
+                        type: 'french', 
+                        text: `Type the French translation of "${verb[0]}"`,
+                        answer: verb[3]
+                    }
+                };
+                questionTypes = [typeMap[questionTypeSetting]];
+            }
+            
+            const question = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+            
+            // Update UI
+            document.getElementById('typing-question').textContent = question.text;
             document.getElementById('typing-input').value = '';
-            document.getElementById('typing-input').dataset.answer = challenge.a;
+            document.getElementById('typing-input').dataset.answer = question.answer;
+            document.getElementById('typing-input').dataset.type = question.type;
             document.getElementById('typing-result').innerHTML = '';
             
-            clearInterval(typingTimer);
-            typingSeconds = 0;
-            typingStartTime = Date.now();
-            typingTimer = setInterval(() => {
-                typingSeconds = Math.floor((Date.now() - typingStartTime) / 1000);
-                document.getElementById('typing-timer').textContent = typingSeconds;
+            // Update progress dots
+            updateProgressDots();
+            
+            // Start timer
+            startTimer();
+        }
+
+        function startTimer() {
+            // Clear any existing timer
+            if (typingState.timer) {
+                clearInterval(typingState.timer);
+            }
+            
+            // Reset time
+            typingState.timeLeft = typingState.totalTime;
+            updateTimerDisplay();
+            
+            // Start new timer
+            typingState.timer = setInterval(() => {
+                typingState.timeLeft--;
+                updateTimerDisplay();
+                
+                // Check if time is up
+                if (typingState.timeLeft <= 0) {
+                    clearInterval(typingState.timer);
+                    handleTimeUp();
+                }
             }, 1000);
         }
 
-        document.getElementById('typing-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                clearInterval(typingTimer);
-                const userAnswer = e.target.value.trim().toLowerCase();
-                const correctAnswer = e.target.dataset.answer.toLowerCase();
-                const resultDiv = document.getElementById('typing-result');
-                const timeTaken = typingSeconds;
-                
-                if (userAnswer === correctAnswer || correctAnswer.includes(userAnswer)) {
-                    userProgress.typingCorrect++;
-                    currentTypingStreak++;
-                    
-                    // Update streak if it's higher than current
-                    if (currentTypingStreak > userProgress.typingStreak) {
-                        userProgress.typingStreak = currentTypingStreak;
-                    }
-                    
-                    // Update best time if applicable
-                    if (!userProgress.typingBestTime || timeTaken < userProgress.typingBestTime) {
-                        userProgress.typingBestTime = timeTaken;
-                    }
-                    
-                    saveUserProgress();
-                    
-                    resultDiv.innerHTML = '<div class="result-message correct">✓ Correct! Well done!</div>';
-                    // Celebrate every 3 correct answers
-                    if (userProgress.typingCorrect % 3 === 0) {
-                        celebrate();
-                    }
-                } else {
-                    userProgress.typingWrong++;
-                    currentTypingStreak = 0;
-                    resultDiv.innerHTML = `<div class="result-message incorrect">✗ Incorrect. The answer was: ${e.target.dataset.answer}</div>`;
-                }
-                
-                document.getElementById('typing-correct').textContent = userProgress.typingCorrect;
-                document.getElementById('typing-wrong').textContent = userProgress.typingWrong;
-                
-                setTimeout(() => {
-                    generateTypingChallenge();
-                }, 2000);
+        function updateTimerDisplay() {
+            document.getElementById('typing-timer').textContent = typingState.timeLeft;
+            
+            // Update progress bar
+            const progressPercent = (typingState.timeLeft / typingState.totalTime) * 100;
+            const progressBar = document.getElementById('time-progress');
+            progressBar.style.width = `${progressPercent}%`;
+            
+            // Change color based on time left
+            progressBar.classList.remove('warning', 'danger');
+            if (typingState.timeLeft <= 3) {
+                progressBar.classList.add('danger');
+            } else if (typingState.timeLeft <= typingState.totalTime * 0.5) {
+                progressBar.classList.add('warning');
+            }
+        }
+
+        function handleTimeUp() {
+            const userAnswer = document.getElementById('typing-input').value.trim();
+            const correctAnswer = document.getElementById('typing-input').dataset.answer;
+            const questionType = document.getElementById('typing-input').dataset.type;
+            
+            // Mark as incorrect (time up)
+            handleAnswer(false, userAnswer, correctAnswer, questionType);
+        }
+
+        document.getElementById('typing-input').addEventListener('input', (e) => {
+            if (!typingState.isActive) return;
+            
+            const userAnswer = e.target.value.trim().toLowerCase();
+            const correctAnswer = e.target.dataset.answer.toLowerCase();
+            
+            // Check if answer is correct (allowing for partial matches in some cases)
+            let isCorrect = false;
+            
+            if (e.target.dataset.type === 'french') {
+                // For French translations, allow partial matches
+                isCorrect = correctAnswer.includes(userAnswer) || userAnswer === correctAnswer;
+            } else {
+                // For verb forms, require exact match
+                isCorrect = userAnswer === correctAnswer;
+            }
+            
+            // If correct, move to next verb
+            if (isCorrect) {
+                clearInterval(typingState.timer);
+                handleAnswer(true, userAnswer, correctAnswer, e.target.dataset.type);
             }
         });
 
-        // Memory Game
-        let memoryCards = [];
-        let flippedCards = [];
-        let matchedPairs = 0;
-        let moves = 0;
+        function handleAnswer(isCorrect, userAnswer, correctAnswer, questionType) {
+            // Record result
+            const currentVerb = typingState.challengeVerbs[typingState.currentVerbIndex];
+            typingState.results.push({
+                verb: currentVerb[0],
+                questionType: questionType,
+                userAnswer: userAnswer,
+                correctAnswer: correctAnswer,
+                isCorrect: isCorrect,
+                timeLeft: typingState.timeLeft
+            });
+            
+            // Update score and streaks
+            if (isCorrect) {
+                typingState.score += typingState.timeLeft; // More points for faster answers
+                typingState.correctAnswers++;
+                typingState.currentStreak++;
+                
+                if (typingState.currentStreak > typingState.bestStreak) {
+                    typingState.bestStreak = typingState.currentStreak;
+                }
+                
+                // Show correct message
+                showResultMessage('Correct! +' + typingState.timeLeft + ' points', 'correct');
+                
+                // Celebrate every 5 correct answers
+                if (typingState.correctAnswers % 5 === 0) {
+                    celebrate();
+                }
+            } else {
+                typingState.incorrectAnswers++;
+                typingState.currentStreak = 0;
+                
+                // Show incorrect message
+                showResultMessage(`Incorrect. The answer was: ${correctAnswer}`, 'incorrect');
+            }
+            
+            // Update UI
+            updateTypingUI();
+            updateProgressDots();
+            
+            // Move to next verb after a delay
+            setTimeout(() => {
+                typingState.currentVerbIndex++;
+                loadNextVerb();
+            }, 1500);
+        }
 
+        function skipVerb() {
+            if (!typingState.isActive) return;
+            
+            clearInterval(typingState.timer);
+            
+            // Record as incorrect
+            const correctAnswer = document.getElementById('typing-input').dataset.answer;
+            const questionType = document.getElementById('typing-input').dataset.type;
+            handleAnswer(false, 'skipped', correctAnswer, questionType);
+        }
+
+        function endTypingChallenge() {
+            typingState.isActive = false;
+            clearInterval(typingState.timer);
+            
+            // Update buttons
+            document.getElementById('start-btn').disabled = false;
+            document.getElementById('skip-btn').disabled = true;
+            document.getElementById('typing-input').disabled = true;
+            
+            // Show results
+            showResults();
+        }
+
+        function showResults() {
+            const resultsContainer = document.getElementById('results-container');
+            const finalScore = document.getElementById('final-score');
+            const correctCount = document.getElementById('correct-count');
+            const incorrectCount = document.getElementById('incorrect-count');
+            const accuracy = document.getElementById('accuracy');
+            const verbsList = document.getElementById('verbs-list');
+            
+            // Calculate accuracy
+            const total = typingState.correctAnswers + typingState.incorrectAnswers;
+            const accuracyPercent = total > 0 ? Math.round((typingState.correctAnswers / total) * 100) : 0;
+            
+            // Update result stats
+            finalScore.textContent = typingState.score;
+            correctCount.textContent = typingState.correctAnswers;
+            incorrectCount.textContent = typingState.incorrectAnswers;
+            accuracy.textContent = `${accuracyPercent}%`;
+            
+            // Populate verbs list
+            verbsList.innerHTML = '';
+            typingState.results.forEach((result, index) => {
+                const verbResult = document.createElement('div');
+                verbResult.className = 'verb-result';
+                
+                verbResult.innerHTML = `
+                    <div class="verb-text">
+                        <strong>${index + 1}.</strong> ${getQuestionText(result.verb, result.questionType)}
+                    </div>
+                    <div class="verb-answer">
+                        Your answer: "${result.userAnswer}"
+                    </div>
+                    <div class="verb-status">
+                        <span class="${result.isCorrect ? 'status-correct' : 'status-incorrect'}">
+                            ${result.isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                        </span>
+                    </div>
+                `;
+                
+                verbsList.appendChild(verbResult);
+            });
+            
+            // Show results container
+            resultsContainer.classList.add('active');
+            
+            // Celebrate if score is high
+            if (typingState.score > 50 || accuracyPercent > 80) {
+                celebrate();
+            }
+        }
+
+        function getQuestionText(verb, type) {
+            switch(type) {
+                case 'preterite':
+                    return `Preterite of "${verb}"`;
+                case 'past':
+                    return `Past participle of "${verb}"`;
+                case 'french':
+                    return `French translation of "${verb}"`;
+                default:
+                    return verb;
+            }
+        }
+
+        function showResultMessage(message, type) {
+            const resultDiv = document.getElementById('typing-result');
+            resultDiv.innerHTML = `<div class="result-message ${type}">${message}</div>`;
+        }
+
+        function updateTypingUI() {
+            document.getElementById('typing-score').textContent = typingState.score;
+            document.getElementById('typing-streak').textContent = typingState.currentStreak;
+            document.getElementById('typing-best').textContent = typingState.bestStreak;
+        }
+
+        function createProgressDots() {
+            const indicator = document.getElementById('progress-indicator');
+            indicator.innerHTML = '';
+            
+            // Limit dots to 50 for visibility
+            const maxDots = Math.min(typingState.challengeVerbs.length, 50);
+            const step = Math.ceil(typingState.challengeVerbs.length / maxDots);
+            
+            for (let i = 0; i < maxDots; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                dot.id = `progress-dot-${i}`;
+                dot.title = `Verbs ${i * step + 1}-${Math.min((i + 1) * step, typingState.challengeVerbs.length)}`;
+                indicator.appendChild(dot);
+            }
+            
+            updateProgressDots();
+        }
+
+        function updateProgressDots() {
+            const maxDots = Math.min(typingState.challengeVerbs.length, 50);
+            const step = Math.ceil(typingState.challengeVerbs.length / maxDots);
+            
+            for (let i = 0; i < maxDots; i++) {
+                const dot = document.getElementById(`progress-dot-${i}`);
+                const startIdx = i * step;
+                const endIdx = Math.min((i + 1) * step, typingState.challengeVerbs.length);
+                
+                // Check if current verb is in this range
+                if (typingState.currentVerbIndex >= startIdx && typingState.currentVerbIndex < endIdx) {
+                    dot.classList.add('active');
+                    dot.classList.remove('correct', 'incorrect');
+                } else if (typingState.currentVerbIndex >= endIdx) {
+                    // All verbs in this range are completed
+                    // Check if all were correct
+                    const rangeResults = typingState.results.slice(startIdx, endIdx);
+                    const allCorrect = rangeResults.length > 0 && rangeResults.every(r => r.isCorrect);
+                    const anyIncorrect = rangeResults.some(r => !r.isCorrect);
+                    
+                    dot.classList.remove('active');
+                    if (allCorrect) {
+                        dot.classList.add('correct');
+                    } else if (anyIncorrect) {
+                        dot.classList.add('incorrect');
+                    }
+                } else {
+                    dot.classList.remove('active', 'correct', 'incorrect');
+                }
+            }
+        }
+
+        function resetTypingChallenge() {
+            initTypingChallenge();
+        }
+
+        function restartChallenge() {
+            initTypingChallenge();
+            startTypingChallenge();
+        }
+
+        // Memory Game
         function initMemoryGame() {
             matchedPairs = 0;
             moves = 0;
@@ -2134,15 +3071,22 @@
             }
         }
 
-        // Initialize
-        loadUserProgress();
-        loadChallengeData();
-        setVerbOfTheDay();
-        populateTable();
-        loadFlashcard();
-        generateQuizQuestion();
-        generateTypingChallenge();
-        initMemoryGame();
+        // Initialize everything
+        function initializeApp() {
+            loadUserProgress();
+            loadChallengeData();
+            setVerbOfTheDay();
+            populateTable();
+            loadFlashcard();
+            generateQuizQuestion();
+            initTypingChallenge();
+            initMemoryGame();
+        }
+
+        // Initialize the app when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeApp();
+        });
     </script>
 </body>
 </html>
